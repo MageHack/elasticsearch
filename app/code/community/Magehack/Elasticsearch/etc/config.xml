@@ -112,4 +112,34 @@
             </updates>
         </layout>
 	</frontend>
+	<adminhtml>
+		<events>
+			<adminhtml_catalog_product_attribute_edit_prepare_form>
+				<observers>
+					<elasticsearch_adminhtml_catalog_product_attribute_edit_prepare_form>
+						<class>elasticsearch/observer</class>
+						<method>adminAttributeEdit</method>
+					</elasticsearch_adminhtml_catalog_product_attribute_edit_prepare_form>
+				</observers>
+			</adminhtml_catalog_product_attribute_edit_prepare_form>
+		</events>
+		<layout>
+			<updates>
+				<elasticsearch>
+					<file>elasticsearch.xml</file>
+				</elasticsearch>
+			</updates>
+		</layout>
+	</adminhtml>
+	<default>
+		<elasticsearch>
+			<globals>
+				<searchlimit>500</searchlimit>
+				<has_wildcard>1</has_wildcard>
+			</globals>
+			<index>
+				<reset_static_members>0</reset_static_members>
+			</index>
+		</elasticsearch>
+	</default>
 </config>
