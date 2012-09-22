@@ -271,7 +271,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	 * 
 	 * @param boolean $force force a generate and push on all types
 	 */
-	public function reindexAll($force = FALSE)
+	public function reindexAll($force = TRUE)
 	{
 		$types = Mage::getModel('elasticsearch/etype')->getCollection();
 		$queue = Mage::getModel('elasticsearch/queue');
@@ -327,18 +327,6 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		return false;
 	}
 	
-	/**
-	 *  Gets store config value for node and key passed as argument.
-	 * 
-	 * @param string $moduleName
-	 * @param string $node
-	 * @param string $key
-	 * @return mixed 
-	 */
-	protected function getModuleConfig($moduleName, $node, $key)
-	{
-		return Mage::getStoreConfig($moduleName . '/' . $node . '/' . $key, $this->getStoreId());
-	}
 	
 	public function addLnav($url){
 		if(strpos($url, 'l=0')===false&&strpos($url, 'l=1'===false)){

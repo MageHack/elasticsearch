@@ -199,7 +199,7 @@
 							<depends><type>scheduled</type></depends>
 						</cron>
 					</fields>
-				</schedule>
+				</schedule>	
 				<advanced>
 					<label>Advanced Settings</label>
 					<frontend_type>text</frontend_type>
