@@ -16,6 +16,8 @@
 !app/design/frontend/Magehack/*/*/*/*
 !app/design/frontend/Magehack/*/*/*/*/*
 !app/design/frontend/Magehack/*/*/*/*/*/*
+!app/design/frontend/base/default/layout/elasticsearch.xml
+!app/design/frontend/base/default/template/elasticsearch/*
 !app/etc/modules/Magehack_Elasticsearch.xml
 !var/elastica-*/*
 !var/elastica-*/*/*

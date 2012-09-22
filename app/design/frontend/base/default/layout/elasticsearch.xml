@@ -1,0 +1,68 @@
+<?xml version="1.0"?>
+<layout version="0.1.0">
+	<default>
+		<reference name="head">
+            <action method="addItem" ifconfig="vpager/config/active"><type>skin_js</type><name>js/vpager.js</name></action>
+            <action method="addItem" ifconfig="vpager/config/active"><type>skin_css</type><name>css/vpager.css</name></action>
+		</reference>
+	</default>
+    <catalog_category_ajax_view>
+		<block type="core/template" name="root" output="toHtml" template="page/html/wrapper.phtml">
+			<action method="setId"><id>ajax-list-container</id></action>
+            <block type="catalog/product_list" name="product_list" template="catalog/product/list.phtml">
+                <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                    <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                </block>
+                <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+            </block>
+         </block>
+    </catalog_category_ajax_view>
+
+	<catalog_category_layered_ajax translate="label">
+        <label>Catalog Category (Anchor)</label>
+        <block type="core/template" name="root" output="toHtml" template="page/html/wrapper.phtml">
+            <action method="setId"><id>layered-container</id></action>
+            <block type="core/template" name="ajax-nav-container" template="page/html/wrapper.phtml" id="layered-nav-container">
+				<action method="setId"><id>ajax-nav-container</id></action>            	
+            	<block type="catalog/layer_view" name="catalog.leftnav" after="currency" template="catalog/layer/view.phtml"/>
+			</block>
+			<block type="core/template" name="ajax-list-container" template="page/html/wrapper.phtml">
+				<action method="setId"><id>ajax-list-container</id></action>
+	                <block type="catalog/product_list" name="product_list" template="catalog/product/list.phtml">
+	                    <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+	                        <block type="page/html_pager" name="product_list_toolbar_pager"/>
+	                    </block>
+	                    <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+	                </block>
+            </block>
+        </block>
+    </catalog_category_layered_ajax>
+    <catalogsearch_result_ajax>
+        <block type="core/template" name="root" output="toHtml" template="page/html/wrapper.phtml">
+            <action method="setId"><id>layered-container</id></action>
+            <block type="core/template" name="ajax-nav-container" template="page/html/wrapper.phtml" id="layered-nav-container">
+                <action method="setId"><id>ajax-nav-container</id></action>
+                <block type="catalogsearch/layer" name="catalogsearch.leftnav" after="currency" template="catalog/layer/view.phtml"/>
+            </block>
+            <block type="core/template" name="ajax-list-container" template="page/html/wrapper.phtml">
+                <action method="setId"><id>ajax-list-container</id></action>
+                <block type="catalogsearch/result" name="search.result" template="vpager/search_result.phtml">
+                    <block type="catalog/product_list" name="search_result_list" template="catalog/product/list.phtml">
+                        <block type="catalog/product_list_toolbar" name="product_list_toolbar" template="catalog/product/list/toolbar.phtml">
+                            <block type="page/html_pager" name="product_list_toolbar_pager"/>
+                        </block>
+                        <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
+                        <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+                        <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>4</count></action>
+                        <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>4</count></action>
+                        <action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+                        <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+                    </block>
+                    <action method="setListOrders"/>
+                    <action method="setListModes"/>
+                    <action method="setListCollection"/>
+                </block>
+            </block>
+        </block>
+    </catalogsearch_result_ajax>
+</layout>
