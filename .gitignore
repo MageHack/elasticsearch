@@ -18,6 +18,8 @@
 !app/design/frontend/Magehack/*/*/*/*/*/*
 !app/design/frontend/base/default/layout/elasticsearch.xml
 !app/design/frontend/base/default/template/elasticsearch/*
+!skin/frontend/base/default/css/vpager.css
+!skin/frontend/base/default/js/vpager.js
 !app/etc/modules/Magehack_Elasticsearch.xml
 !var/elastica-*/*
 !var/elastica-*/*/*

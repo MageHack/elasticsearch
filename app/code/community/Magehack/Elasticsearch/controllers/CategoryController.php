@@ -18,6 +18,8 @@ class Magehack_Elasticsearch_CategoryController extends Mage_Catalog_CategoryCon
 	public function viewAction()
     {
     	$oneRequest = $this->getRequest();
+		Varien_Profiler::enable();
+		Varien_Profiler::start('ajax');
     	if($oneRequest->isXmlHttpRequest()){
     		if ($category = $this->_initCatagory()) {
     			//if($lnav){
@@ -29,5 +31,9 @@ class Magehack_Elasticsearch_CategoryController extends Mage_Catalog_CategoryCon
     	}else{
     		parent::viewAction();
     	}
+		Varien_Profiler::stop('ajax');
+		$profilerFetch = Varien_Profiler::fetch('ajax');
+		Mage::log(__METHOD__ . ' profile time: ' . $profilerFetch, Zend_Log::INFO ,'profiler.log');
+		Varien_Profiler::disable();
     }
  }

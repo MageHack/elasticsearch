@@ -2,8 +2,8 @@
 <layout version="0.1.0">
 	<default>
 		<reference name="head">
-            <action method="addItem" ifconfig="vpager/config/active"><type>skin_js</type><name>js/vpager.js</name></action>
-            <action method="addItem" ifconfig="vpager/config/active"><type>skin_css</type><name>css/vpager.css</name></action>
+            <action method="addItem" ifconfig="elasticsearch/globals/enabled"><type>skin_js</type><name>js/vpager.js</name></action>
+            <action method="addItem" ifconfig="elasticsearch/globals/enabled"><type>skin_css</type><name>css/vpager.css</name></action>
 		</reference>
 	</default>
     <catalog_category_ajax_view>
