@@ -5,4 +5,56 @@
 			<version>1.0.0</version>
 		</Magehack_Elasticsearch>
 	</modules>
+	<global>
+		<blocks>
+			<elasticsearch>
+				<class>Magehack_Elasticsearch_Block</class>
+			</elasticsearch>
+		</blocks>
+		<helpers>
+			<elasticsearch>
+				<class>Magehack_Elasticsearch_Helper</class>
+			</elasticsearch>
+		</helpers>
+		<models>
+			<elasticsearch>
+				<class>Magehack_Elasticsearch_Model</class>
+				<resourceModel>elasticsearch_mysql4</resourceModel>
+			</elasticsearch>
+			<elasticsearch_mysql4>
+				<class>Magehack_Elasticsearch_Model_Mysql4</class>
+				<entities>
+					<queue_item>
+						<table>elasticsearch_queue_item</table>
+					</queue_item>
+					<etype>
+						<table>elasticsearch_etype</table>
+					</etype>
+					<equery>
+						<table>elasticsearch_equery</table>
+					</equery>
+				</entities>
+			</elasticsearch_mysql4>
+		</models>
+		<resources>
+            <elasticsearch_setup>
+                <setup>
+                    <module>Magehack_Elasticsearch</module>
+                </setup>
+                <connection>
+                    <use>core_setup</use>
+                </connection>
+            </elasticsearch_setup>
+            <elasticsearch_write>
+                <connection>
+                    <use>core_write</use>
+                </connection>
+            </elasticsearch_write>
+            <elasticsearch_read>
+                <connection>
+                    <use>core_read</use>
+                </connection>
+            </elasticsearch_read>
+        </resources>
+	</global>
 </config>
