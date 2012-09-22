@@ -1,0 +1,9 @@
+<?xml version="1.0"?>
+<config>
+    <modules>		
+        <Magehack_Elasticsearch>
+            <active>true</active>
+            <codePool>local</codePool>
+        </Magehack_Elasticsearch>		
+    </modules>
+</config>
