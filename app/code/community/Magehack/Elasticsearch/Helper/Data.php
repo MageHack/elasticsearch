@@ -3,7 +3,7 @@
 class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 {
 	protected $_storeId = 0;
-	protected $_module = 'elasticsearch';
+	protected $_moduleName = 'elasticsearch';
 	
 	/**
 	 *
