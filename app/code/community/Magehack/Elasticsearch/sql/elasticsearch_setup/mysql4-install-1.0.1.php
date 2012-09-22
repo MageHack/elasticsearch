@@ -19,23 +19,6 @@ if (!$conn->tableColumnExists($this->getTable('catalog/eav_attribute'), 'elastic
     $conn->addColumn($this->getTable('catalog/eav_attribute'), 'elasticsearch_custom_map', 'text NULL');
 }
 
-// Type table
-
-$installer->run("
-
-DROP TABLE IF EXISTS `{$this->getTable('elasticsearch_etype')}`;
-CREATE TABLE `{$this->getTable('elasticsearch_etype')}` (
-  `etype_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
-  `feed_class` varchar(255) NOT NULL DEFAULT '',
-  `model_class` varchar(255) NOT NULL DEFAULT '',
-  `name` varchar(128) NOT NULL DEFAULT '',
-  `enabled` tinyint(1) unsigned NOT NULL DEFAULT 0,
-  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`etype_id`),
-  UNIQUE (`model_class`, `name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
-
-");
 
 // Queue setup
 
@@ -51,6 +34,24 @@ CREATE TABLE `{$this->getTable('elasticsearch_queue_item')}` (
   `etype_id` int(11) unsigned NOT NULL,
   PRIMARY KEY (`queue_item_id`),
   FOREIGN KEY (etype_id) REFERENCES elasticsearch_etype(etype_id) ON DELETE CASCADE
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+
+");
+
+// Type table
+
+$installer->run("
+
+DROP TABLE IF EXISTS `{$this->getTable('elasticsearch_etype')}`;
+CREATE TABLE `{$this->getTable('elasticsearch_etype')}` (
+  `etype_id` int(11) unsigned NOT NULL AUTO_INCREMENT,
+  `feed_class` varchar(255) NOT NULL DEFAULT '',
+  `model_class` varchar(255) NOT NULL DEFAULT '',
+  `name` varchar(128) NOT NULL DEFAULT '',
+  `enabled` tinyint(1) unsigned NOT NULL DEFAULT 0,
+  `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`etype_id`),
+  UNIQUE (`model_class`, `name`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
 
 ");
@@ -71,9 +72,9 @@ CREATE TABLE `{$this->getTable('elasticsearch_equery')}` (
 
 ");
 
-//$installer->run ("
-//ALTER TABLE {$this->getTable('elasticsearch_equery')} ADD CONSTRAINT `FK_CATALOGSEARCH_QUERY_ID` FOREIGN KEY (`query_id`) REFERENCES `{$this->getTable('catalogsearch_query')}` (`query_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-//");
+$installer->run ("
+ALTER TABLE {$this->getTable('elasticsearch_equery')} ADD CONSTRAINT `FK_CATALOGSEARCH_QUERY_ID` FOREIGN KEY (`query_id`) REFERENCES `{$this->getTable('catalogsearch_query')}` (`query_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+");
 
 $installer->endSetup();
 //$installer->installEntities();

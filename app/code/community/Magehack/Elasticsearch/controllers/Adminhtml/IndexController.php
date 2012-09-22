@@ -5,7 +5,7 @@
  *
  *
  * @category    Elasticsearch
- * @package     GPMD_Elasticsearch
+ * @package     Magehack_Elasticsearch
  * 
  */
 
@@ -32,7 +32,7 @@ class Magehack_Elasticsearch_Adminhtml_IndexController extends Mage_Adminhtml_Co
 		$this->_getHelper()->remap();
 		
 		if($this->_getHelper()->isScheduled($config) && $this->_getHelper()->getCronExpr($config)){
-			$job_code = GPMD_Elasticsearch_Helper_Data::CRON_JOB_CODE;
+			$job_code = Magehack_Elasticsearch_Helper_Data::CRON_JOB_CODE;
 			try {
 				$schedule = Mage::getModel('cron/schedule');
 				$schedule->setJobCode($job_code)
