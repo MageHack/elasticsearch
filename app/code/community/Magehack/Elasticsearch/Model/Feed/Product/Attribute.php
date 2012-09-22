@@ -7,7 +7,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 	const DATA_ARRAY_BACKEND = '_backend';
 	
 	protected $_searchTypes;
-	protected $_elasticType;
+	protected $_elasticFrontType;
+	protected $_elasticBackType;
 	
 	protected $_magBackType;
 	protected $_magFrontType;
@@ -124,7 +125,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		$this->_magBackType = $attribute->getData('backend_type');
 		$this->_magFrontType = $attribute->getData('frontend_input'); // Can be NULL
 		
-		$this->_elasticType = $this->_elasticMapType();
+		$this->_elasticFrontType = $this->_elasticMapType();
+		$this->_elasticBackType = "string";
 		
 		if($attribute->getData('elasticsearch_custom_map')){
 			$this->_customMap = json_decode($attribute->getData('elasticsearch_custom_map'), TRUE);
@@ -140,7 +142,7 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 	}
 	
 	public function getType(){
-		return $this->_elasticType;
+		return $this->_elasticFrontType;
 	}
 	
 	public function setProduct(Mage_Catalog_Model_Product $product){
@@ -191,11 +193,9 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 	}
 	
 	protected function _getTextAreaValue($type){
-		if($type == self::ATTRIBUTE_TYPE_FRONTEND  && $value = $this->_attribute->getFrontend()->getValue($this->getProduct())){
+		if($value = $this->_attribute->getFrontend()->getValue($this->getProduct())){
 			return strip_tags($value);
 		}
-		
-		if ($type == 'backend')
 		
 		return NULL;
 	}
@@ -204,7 +204,18 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		if($type == self::ATTRIBUTE_TYPE_FRONTEND && $value = $this->_attribute->getFrontend()->getValue($this->getProduct())){
 			return trim($value);
 		}
-		
+		if ($type == self::ATTRIBUTE_TYPE_BACKEND){
+			$attribute_options_model = Mage::getModel('eav/entity_attribute_source_table');
+			$attribute_table = $attribute_options_model->setAttribute($this->_attribute);
+			$options = $attribute_options_model->getAllOptions(false);
+			foreach($options as $option) {
+				if ($option['label'] == $this->_attribute->getFrontend()->getValue($this->getProduct())){
+					return $option['value'];
+				}
+				
+			}
+			
+		}
 		return NULL;
 	}
 	
@@ -215,7 +226,22 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 			//Mage::helper('elasticsearch')->log(var_export($val, true));
 			return $val;
 		}
-		
+		if ($type == self::ATTRIBUTE_TYPE_BACKEND && $value = $this->_attribute->getFrontend()->getValue($this->getProduct())){
+			$attribute_options_model = Mage::getModel('eav/entity_attribute_source_table');
+			$attribute_table = $attribute_options_model->setAttribute($this->_attribute);
+			$options = $attribute_options_model->getAllOptions(false);
+			$val = array_unique(array_map('trim', explode(',', $value)));
+			$result = array();
+			foreach($options as $option) {
+				if (in_array($option['label'], $val)){
+					$result[] = $option['value'];
+				}
+				
+			}
+			if(!empty($result)){
+				return $result;
+			}
+		}
 		return NULL;
 	}
 	
@@ -246,7 +272,7 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		if($method !== FALSE){
 			$method = "_get".$method."Value";
 			if(method_exists($this, $method)){
-				return 'From method Attr ID = ' . $aId;
+				return $this->$method(self::ATTRIBUTE_TYPE_BACKEND);
 			}
 		}else{
 			/**
@@ -278,35 +304,32 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 	public function toTypeMap(&$parent_array){
 		
 		$data = array(
-			"type" => ($this->_isMultiField()) ? "multi_field" : $this->_elasticType
+			"type" => ($this->_isMultiField()) ? "multi_field" : $this->_elasticFrontType
 		);
 		
 		if($this->_isMultiField()){
 			$data['fields'] = array();
 			
 			$data['fields'][$this->_name] = array(
-				'type' => $this->_elasticType,
+				'type' => $this->_elasticFrontType,
 				'index' => ($this->_searchTypes['searchable']) ? "analyzed" : "not_analyzed"
 			);
 			
 			$data['fields'][$this->_name . self::DATA_ARRAY_BACKEND] = array(
-				'type' => $this->_elasticType,
-				'index' => ($this->_searchTypes['searchable']) ? "analyzed" : "not_analyzed"
+				'type' => $this->_elasticBackType,
+				'index' => "not_analyzed"
 			);
 			
 			
 			if($this->_isFilterable()){
 				$data['fields']['f_'.$this->_name] = array(
-					'type' => $this->_elasticType,
+					'type' => $this->_elasticFrontType,
 					'index' => 'not_analyzed',
 					'include_in_all' => FALSE
 				);
-			}
-			
-			
-			if($this->_isFilterable()){
+				
 				$data['fields']['f_'. $this->_name . self::DATA_ARRAY_BACKEND] = array(
-					'type' => $this->_elasticType,
+					'type' => $this->_elasticBackType,
 					'index' => 'not_analyzed',
 					'include_in_all' => FALSE
 				);
@@ -316,25 +339,25 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 			if($this->_isAutoSuggestable()){
 				// Edge N-Gram
 				$data['fields']['eng_'.$this->_name] = array(
-					"type" => $this->_elasticType,
+					"type" => $this->_elasticFrontType,
 					"include_in_all" => FALSE,
 					"analyzer" => "edgengram"
 				);
 				// N-Gram
 				$data['fields']['ng_'.$this->_name] = array(
-					"type" => $this->_elasticType,
+					"type" => $this->_elasticFrontType,
 					"include_in_all" => FALSE,
 					"analyzer" => "ngram"
 				);
 				// Snowball
 				$data['fields']['sb_'.$this->_name] = array(
-					"type" => $this->_elasticType,
+					"type" => $this->_elasticFrontType,
 					"include_in_all" => FALSE,
 					"analyzer" => "snowball"
 				);
 			}
 		}else{
-			if($this->_elasticType == "string" && !$this->_isSearchable()){
+			if($this->_elasticFrontType == "string" && !$this->_isSearchable()){
 				$data['index'] = "not_analyzed";
 			}
 			

@@ -271,7 +271,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	 * 
 	 * @param boolean $force force a generate and push on all types
 	 */
-	public function reindexAll($force = FALSE)
+	public function reindexAll($force = TRUE)
 	{
 		$types = Mage::getModel('elasticsearch/etype')->getCollection();
 		$queue = Mage::getModel('elasticsearch/queue');

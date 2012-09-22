@@ -138,9 +138,8 @@ class Magehack_Elasticsearch_Model_Feed_Product extends Magehack_Elasticsearch_M
 		$data['categories'] = $product->getCategoryIds();
 		$data['visibility'] = $product->getData('visibility');
 		
-		$this->_getHelper()->log('store_id:' . $data['store_id']);
-		$this->_getHelper()->log('visibility:' . $data['visibility']);
 		Mage::dispatchEvent($this->_eventPrefix . '_prepare_product_attributes_after', array("feed_product" => $this, "product" => $product, "data" => $data));
+		//$this->_getHelper()->log('Data:' . var_export(json_encode($data), true));
 		return $data;
 	}
 
