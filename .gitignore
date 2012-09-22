@@ -12,7 +12,7 @@
 !app/design/frontend/Magehack/*/*/*/*
 !app/design/frontend/Magehack/*/*/*/*/*
 !app/design/frontend/Magehack/*/*/*/*/*/*
-!app/etc/modules/Magehack_ElasticSearch.xml
+!app/etc/modules/Magehack_Elasticsearch.xml
 !var/elastica-*/*
 !var/elastica-*/*/*
 !var/elastica-*/*/*/*
