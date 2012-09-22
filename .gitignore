@@ -26,3 +26,4 @@
 !var/elastica-*/*/*
 !var/elastica-*/*/*/*
 !var/elastica-*/*/*/*/*
+!js/magehack/*

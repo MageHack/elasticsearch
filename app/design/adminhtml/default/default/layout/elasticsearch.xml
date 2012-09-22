@@ -29,19 +29,19 @@
 <layout>
 	<adminhtml_catalog_product_action_attribute_edit>
 		<reference name="head">
-			<action method="addJs"><script>gpmd/validation.js</script></action>
+			<action method="addJs"><script>magehack/validation.js</script></action>
 		</reference>
 	</adminhtml_catalog_product_action_attribute_edit>
 	
 	<adminhtml_catalog_product_attribute_edit>
 		<reference name="head">
-			<action method="addJs"><script>gpmd/validation.js</script></action>
+			<action method="addJs"><script>magehack/validation.js</script></action>
 		</reference>
 	</adminhtml_catalog_product_attribute_edit>
 	
 	<adminhtml_system_config_edit>
 		<reference name="head">
-			<action method="addJs"><script>gpmd/validation.js</script></action>
+			<action method="addJs"><script>magehack/validation.js</script></action>
 		</reference>
 	</adminhtml_system_config_edit>
 </layout>
