@@ -1,0 +1,228 @@
+<?xml version="1.0"?>
+<config>
+    <tabs>
+        <magehacktab translate="label">
+            <label>Magehack</label>
+            <sort_order>5120</sort_order>
+        </magehacktab>
+    </tabs>
+	<sections>
+		<elasticsearch translate="label">
+			<label>Elasticsearch</label>
+			<tab>magehacktab</tab>
+			<frontend_type>text</frontend_type>
+			<sort_order>0</sort_order>
+			<show_in_default>1</show_in_default>
+			<show_in_website>1</show_in_website>
+			<show_in_store>1</show_in_store>
+			<groups>
+				<globals translate="label">
+					<label>Global Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>100</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<enabled>
+							<label>Enabled</label>
+							<comment>
+								<![CDATA[<span class="notice">Enable / Disable this module</span>]]>
+							</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</enabled>
+						<minienabled>
+							<label>Search Form Mini Enabled</label>
+							<comment>
+								<![CDATA[<span class="notice">Enable / Disable Elasticsearch form mini block.<br />If disabled default Magento block is output</span>]]>
+							</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</minienabled>
+						
+						<searchlimit>
+							<label>Search Query Limit</label>
+							<comment>
+								<![CDATA[Search query limit. Default is 500]]>
+							</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>40</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</searchlimit>
+						
+						<has_wildcard>
+							<label>Add wildcard to search query strings</label>
+							<comment>
+								<![CDATA[<span class="notice">When set to yes, adds wildcard character(*) to search query strings</span>]]>
+							</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>45</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</has_wildcard>
+						
+						
+						<host>
+							<label>Hostname / IP</label>
+							<comment>
+								<![CDATA[Hostname or IP address of elasticsearch server (default: localhost)]]>
+							</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>60</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+							<depends><enabled>1</enabled></depends>
+						</host>
+						<port>
+							<label>Port</label>
+							<comment>
+								<![CDATA[Elasticsearch server port number (default: 9200)]]>
+							</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>70</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+							<depends><enabled>1</enabled></depends>
+						</port>
+					</fields>
+				</globals>
+				<index translate='label'>
+					<label>Index Options</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>110</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+							<run translate="label">
+							<label>Run now</label>
+							<frontend_type>button</frontend_type>
+							<frontend_model>elasticsearch/adminhtml_run</frontend_model>
+							<sort_order>1</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</run>
+						<name>
+							<label>Index Name</label>
+							<frontend_type>text</frontend_type>
+							<comment>
+								<![CDATA[Name of index to use inside elasticsearch (lowercase no spaces e.g. 'My Index' would be 'myindex')]]>
+							</comment>
+							<sort_order>10</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>required-entry</validate>
+						</name>
+						<reset_static_members>
+							<label>Reset static members</label>
+							<comment>
+								<![CDATA[<span class="notice">Reset feed static members. If set to 'Yes' static members for feed types will be reset.</span>]]>
+							</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</reset_static_members>
+						<custom_settings>
+							<label>Custom Settings</label>
+							<frontend_type>textarea</frontend_type>
+							<comment>
+								<![CDATA[Must be in valid <a href="http://www.json.org/">JSON format</a>. Can be used to set options at index level, like custom analyzers]]>
+							</comment>
+							<sort_order>30</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>validate-json</validate>
+						</custom_settings>
+					</fields>
+				</index>
+				<schedule>
+					<label>Schedule Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>100</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<type>
+							<label>Schedule Type</label>
+							<frontend_type>select</frontend_type>
+							<sort_order>10</sort_order>
+							<source_model>elasticsearch/source_schedule</source_model>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<comment>
+								<![CDATA[Realtime will re-index / update the index in realtime. Scheduled will only re-index / update the index at the scheduled intervals.]]>
+							</comment>
+						</type>
+						<cron>
+							<label>Cron Schedule</label>
+							<comment>
+								<![CDATA[<pre style="line-height: 1.1em;">*  *  *  *  *
+│  │  │  │  │
+│  │  │  │  │
+│  │  │  │  └───────── day of week (0 - 7) (Sunday=0 or 7)
+│  │  │  └───────────── month (1 - 12)
+│  │  └───────────────── day of month (1 - 31)
+│  └───────────────────── hour (0 - 23)
+└───────────────────────── min (0 - 59)</pre><p>See here for <a href="http://en.wikipedia.org/wiki/Cron">valid cron syntax</a></p>]]>
+							</comment>
+							<frontend_type>text</frontend_type>
+							<sort_order>20</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+							<validate>validate-cron</validate>
+							<depends><type>scheduled</type></depends>
+						</cron>
+					</fields>
+				</schedule>
+				<advanced>
+					<label>Advanced Settings</label>
+					<frontend_type>text</frontend_type>
+					<sort_order>120</sort_order>
+					<show_in_default>1</show_in_default>
+					<show_in_website>1</show_in_website>
+					<show_in_store>1</show_in_store>
+					<fields>
+						<enabled>
+							<label>Advanced Mode</label>
+							<comment>
+								<![CDATA[Only switch this on if you want to be able to override default functionality OR if you have custom controllers that handle products / checkout / cart (Default is 'No')]]>
+							</comment>
+							<frontend_type>select</frontend_type>
+							<source_model>adminhtml/system_config_source_yesno</source_model>
+							<sort_order>50</sort_order>
+							<show_in_default>1</show_in_default>
+							<show_in_website>1</show_in_website>
+							<show_in_store>1</show_in_store>
+						</enabled>
+					</fields>
+				</advanced>
+			</groups>
+		</elasticsearch>
+	</sections>
+</config>

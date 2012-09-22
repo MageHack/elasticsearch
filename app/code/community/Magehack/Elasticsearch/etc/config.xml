@@ -73,4 +73,22 @@
             </elasticsearch_read>
         </resources>
 	</global>
+	<frontend>
+		<routers>
+            <elasticsearch>
+                <use>standard</use>
+                <args>
+                    <module>Magehack_Elasticsearch</module>
+                    <frontName>elasticsearch</frontName>
+                </args>
+            </elasticsearch>
+        </routers>
+		<layout>
+            <updates>
+                <elasticsearch>
+                    <file>elasticsearch.xml</file>
+                </elasticsearch>
+            </updates>
+        </layout>
+	</frontend>
 </config>
