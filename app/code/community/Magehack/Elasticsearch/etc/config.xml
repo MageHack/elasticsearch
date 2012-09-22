@@ -25,7 +25,7 @@
 		<blocks>
 			<elasticsearch>
 				<class>Magehack_Elasticsearch_Block</class>
-			</elasticsearch>	
+			</elasticsearch>
 			<catalogsearch>
                 <rewrite>
                     <result>Magehack_Elasticsearch_Block_CatalogSearch_Result</result>
@@ -35,7 +35,7 @@
                         <magehack_elasticsearch before="Mage_CatalogSearch">Magehack_Elasticsearch</magehack_elasticsearch>
                     </modules>
                 </args>
-            </catalogsearch>	
+            </catalogsearch>
 		</blocks>
 		<helpers>
 			<elasticsearch>
@@ -82,6 +82,16 @@
                 </connection>
             </elasticsearch_read>
         </resources>
+	<events>
+			<catalogsearch_index_process_start>
+				<observers>
+					<elasticsearch_catalog_entity_attribute_save_after>
+						<class>elasticsearch/observer</class>
+						<method>reindex</method>
+					</elasticsearch_catalog_entity_attribute_save_after>
+				</observers>
+                        </catalogsearch_index_process_start>
+	</events>
 	</global>
 	<frontend>
 		<routers>
@@ -98,7 +108,7 @@
 						<magehack_elasticsearch before="Mage_Catalog">Magehack_Elasticsearch</magehack_elasticsearch>
 					</modules>
 				</args>
-			</catalog>		
+			</catalog>
         </routers>
 		<layout>
             <updates>
