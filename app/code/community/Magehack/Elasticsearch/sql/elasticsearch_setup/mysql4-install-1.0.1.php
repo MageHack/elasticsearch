@@ -68,13 +68,14 @@ CREATE TABLE `{$this->getTable('elasticsearch_etype')}` (
   `created` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`etype_id`),
   UNIQUE (`model_class`, `name`)
-) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;");
 
-");
+
+
 
 
 $installer->run ("
-ALTER TABLE {$this->getTable('elasticsearch_equery')} ADD CONSTRAINT `FK_CATALOGSEARCH_QUERY_ID` FOREIGN KEY (`query_id`) REFERENCES `{$this->getTable('catalogsearch_query')}` (`query_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+	ALTER TABLE {$this->getTable('elasticsearch_equery')} ADD CONSTRAINT `FK_CATALOGSEARCH_QUERY_ID` FOREIGN KEY (`query_id`) REFERENCES `{$this->getTable('catalogsearch_query')}` (`query_id`) ON DELETE CASCADE ON UPDATE CASCADE;
 ");
 
 $installer->endSetup();
