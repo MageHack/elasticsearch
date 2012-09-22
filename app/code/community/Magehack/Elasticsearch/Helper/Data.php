@@ -2,6 +2,25 @@
 
 class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 {
+	
+	const XML_PATH_GLOBAL_ENABLED = 'elasticsearch/globals/enabled';
+	const XML_PATH_HAS_WILDCARD = 'elasticsearch/globals/has_wildcard';
+	const XML_PATH_INDEX_NAME = 'elasticsearch/index/name';
+	const XML_PATH_ELASTIC_HOST = 'elasticsearch/globals/host';
+	const XML_PATH_ELASTIC_LIMIT = 'elasticsearch/globals/searchlimit';
+	const XML_PATH_STATIC_MEMBERS_RESET = 'elasticsearch/index/reset_static_members';
+	const XML_PATH_ELASTIC_PORT = 'elasticsearch/globals/port';
+	const XML_PATH_ELASTIC_TRANSPORT = 'elasticsearch/globals/transport';
+	const XML_PATH_INDEX_CUSTOM_SETTINGS = 'elasticsearch/index/custom_settings';
+	const XML_PATH_SCHEDULE_TYPE = 'elasticsearch/schedule/type';
+	const XML_PATH_SCHEDULE_CRON = 'elasticsearch/schedule/cron';
+	const XML_PATH_EQUERY_SITESEARCH = 'global/elasticsearch/equery/sitesearch';
+	const XML_PATH_EQUERY_FROMSIZESEARCH = 'global/elasticsearch/equery/fromsizesearch';
+	const CRON_JOB_CODE = 'elasticsearch';
+	const QUERY_VAR_NAME = 'q';
+	const MAX_QUERY_LEN = 200;
+	const CONTROLLER_SEARCH_RESULT_ACTION = 'elasticsearch/result';
+	
 	protected $_storeId = 0;
 	protected $_moduleName = 'elasticsearch';
 	
