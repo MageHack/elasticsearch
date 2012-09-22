@@ -50,6 +50,18 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 
 	
+	/**
+	 * Logging helper
+	 * 
+	 * @param type $message
+	 * @param type $level 
+	 */
+	public function log($message, $level = null)
+	{
+		Mage::log($message, $level, 'magehack_elasticsearch.log');
+	}
+
+	
 	
 	/**
 	 *  Gets store config value for node and key passed as argument.
