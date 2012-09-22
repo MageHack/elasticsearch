@@ -1,0 +1,15 @@
+*
+!*/
+!.gitignore
+!README.md
+!app/code/community/magehack/*
+!app/code/community/magehack/*/*
+!app/code/community/magehack/*/*/*
+!app/code/community/magehack/*/*/*/*
+!app/design/frontend/magehack/*
+!app/design/frontend/magehack/*/*
+!app/design/frontend/magehack/*/*/*
+!app/design/frontend/magehack/*/*/*/*
+!app/design/frontend/magehack/*/*/*/*/*
+!app/design/frontend/magehack/*/*/*/*/*/*
+!app/etc/modules/magehack_ElasticSearch.xml
