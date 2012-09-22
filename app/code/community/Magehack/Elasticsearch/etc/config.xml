@@ -6,6 +6,22 @@
 		</Magehack_Elasticsearch>
 	</modules>
 	<global>
+		<elasticsearch>
+			<types>
+				<product>
+					<feed_class>elasticsearch/feed_product</feed_class>
+					<model_class>catalog/product</model_class>
+					<name>product</name>
+					<enabled>1</enabled>
+				</product>
+				<cmspage>
+					<feed_class>elasticsearch/feed_cmspage</feed_class>
+					<model_class>cms/page</model_class>
+					<name>cmspage</name>
+					<enabled>1</enabled>
+				</cmspage>
+			</types>
+		</elasticsearch>
 		<blocks>
 			<elasticsearch>
 				<class>Magehack_Elasticsearch_Block</class>
