@@ -26,6 +26,16 @@
 			<elasticsearch>
 				<class>Magehack_Elasticsearch_Block</class>
 			</elasticsearch>
+			<catalogsearch>
+                <rewrite>
+                    <result>Magehack_Elasticsearch_Block_CatalogSearch_Result</result>
+                </rewrite>
+                <args>
+                    <modules>
+                        <magehack_elasticsearch before="Mage_CatalogSearch">Magehack_Elasticsearch</magehack_elasticsearch>
+                    </modules>
+                </args>
+            </catalogsearch>
 		</blocks>
 		<helpers>
 			<elasticsearch>
@@ -82,6 +92,13 @@
                     <frontName>elasticsearch</frontName>
                 </args>
             </elasticsearch>
+            <catalog>
+				<args>
+					<modules>
+						<magehack_elasticsearch before="Mage_Catalog">Magehack_Elasticsearch</magehack_elasticsearch>
+					</modules>
+				</args>
+			</catalog>
         </routers>
 		<layout>
             <updates>
