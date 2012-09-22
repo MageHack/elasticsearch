@@ -4,8 +4,8 @@
  *
  * @category    GPMD
  * @package     Magehack_Elasticsearch
- * @copyright   
- * @license     
+ * @copyright
+ * @license
  */
 
 /**
@@ -17,8 +17,8 @@
 class Magehack_Elasticsearch_Model_Events_Observer {
 	/**
 	 * Inject 'Use in Autosuggest' field to add/edit attribute form
-	 * 
-	 * @param Varien_Event_Observer $observer 
+	 *
+	 * @param Varien_Event_Observer $observer
 	 */
 	public function adminAttributeEdit(Varien_Event_Observer $observer){
 		$form = $observer->getEvent()->getForm();
@@ -32,5 +32,14 @@ class Magehack_Elasticsearch_Model_Events_Observer {
 				'note'	   => Mage::helper('catalog')->__('Used in Elasticsearch, attribute is used for search box auto-suggestions'),
 			));
 		}
+	}
+
+	/**
+	 * Re-index elasticsearch when any other reindex process occurs
+	 *
+	 * @param Varien_Event_Observer $observer
+	 */
+	public function reindex(Varien_Event_Observer $observer){
+		Mage::helper('elasticsearch')->reindexAll();
 	}
 }

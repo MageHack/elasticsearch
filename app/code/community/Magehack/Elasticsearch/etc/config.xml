@@ -91,7 +91,7 @@
 			<catalogsearch_index_process_start>
 				<observers>
 					<elasticsearch_catalog_entity_attribute_save_after>
-						<class>elasticsearch/observer</class>
+						<class>elasticsearch/events_observer</class>
 						<method>reindex</method>
 					</elasticsearch_catalog_entity_attribute_save_after>
 				</observers>
