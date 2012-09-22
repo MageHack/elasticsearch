@@ -1,0 +1,21 @@
+div.category-products{
+	-webkit-transition: background-color 300ms ease-in 200ms; /* property duration timing-function delay */
+    -moz-transition: background-color 300ms ease-in 200ms;
+    -o-transition: background-color 300ms ease-in 200ms;
+    transition: background-color 300ms ease-in 200ms;
+}
+div.page-loading{
+    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+
+    /* IE 5-7 */
+    filter: alpha(opacity=50);
+
+    /* Netscape */
+    -moz-opacity: 0.5;
+
+    /* Safari 1.x */
+    -khtml-opacity: 0.5;
+
+    /* Good browsers */
+    opacity: 0.5;
+}
