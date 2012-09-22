@@ -40,6 +40,6 @@ class Magehack_Elasticsearch_Model_Events_Observer {
 	 * @param Varien_Event_Observer $observer
 	 */
 	public function reindex(Varien_Event_Observer $observer){
-		Mage::helper('elasticsearch')->reindexAll();
+		$helper = Mage::helper('elasticsearch')->remapReindexAll();
 	}
 }
