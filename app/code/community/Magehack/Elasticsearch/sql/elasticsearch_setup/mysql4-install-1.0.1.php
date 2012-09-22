@@ -74,9 +74,9 @@ CREATE TABLE `{$this->getTable('elasticsearch_etype')}` (
 
 
 
-//$installer->run ("
-//ALTER TABLE {$this->getTable('elasticsearch_equery')} ADD CONSTRAINT `FK_CATALOGSEARCH_QUERY_ID` FOREIGN KEY (`query_id`) REFERENCES `{$this->getTable('catalogsearch_query')}` (`query_id`) ON DELETE CASCADE ON UPDATE CASCADE;
-//");
+$installer->run ("
+	ALTER TABLE {$this->getTable('elasticsearch_equery')} ADD CONSTRAINT `FK_CATALOGSEARCH_QUERY_ID` FOREIGN KEY (`query_id`) REFERENCES `{$this->getTable('catalogsearch_query')}` (`query_id`) ON DELETE CASCADE ON UPDATE CASCADE;
+");
 
 $installer->endSetup();
 //$installer->installEntities();
