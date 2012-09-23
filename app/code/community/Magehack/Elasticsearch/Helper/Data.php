@@ -61,7 +61,8 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	 */
 	public function getSearchQueryLimit()
 	{
-		return Mage::getStoreConfig('catalog/frontend/grid_per_page', $this->getStoreId());
+		//return Mage::getStoreConfig('catalog/frontend/grid_per_page', $this->getStoreId());
+		return 1000;
 	}
 
 	/**
