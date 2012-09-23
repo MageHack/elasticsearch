@@ -1,18 +1,10 @@
 <?php
-/**
- * Magento
- * 
- *
- * @category    GPMD
- * @package     GPMD_Elasticsearch
- * @author      Carlo Tasca
- */
 
 /**
- * GPMD_Elasticsearch_Block_Layer
+ * Magehack_Elasticsearch_Block_Layer
  *
- * @category    GPMD
- * @package     GPMD_Elasticsearch
+ * @category    Magehack 
+ * @package     Magehack_Elasticsearch
  * @author      Carlo Tasca
  */
 class Magehack_Elasticsearch_Block_Layer extends Magehack_Elasticsearch_Block_Layer_View
