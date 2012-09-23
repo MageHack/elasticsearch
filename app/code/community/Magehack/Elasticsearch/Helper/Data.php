@@ -54,6 +54,15 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 			return $this->getModuleConfig($this->_moduleName, $arguments[0], $inflectedName);
 		}
 	}
+	
+	/**
+	 * Returns config
+	 * @return int 
+	 */
+	public function getSearchQueryLimit()
+	{
+		return Mage::getStoreConfig('catalog/frontend/grid_per_page', $this->getStoreId());
+	}
 
 	/**
 	 * Retrieve result page url and set "secure" param to avoid confirm
@@ -409,7 +418,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$filters = array_merge($defaultFilters, $filters);
 
 		if ($limit === false) {
-			$limit = ($this->getLimitParam() === 'all') ? 1000 : $this->getLimitParam();
+			$limit = $this->getSearchQueryLimit();
 		}
 		$wildcard = $this->getConfigHasWildcard('globals') ? '*' : '';
 		return $api->doSearch($this->getEqueryText() . $wildcard, $filters, $facets, $from, $limit, $sort);
