@@ -532,6 +532,16 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		return Mage::getStoreConfig(Mage_CatalogSearch_Model_Query::XML_PATH_MAX_QUERY_LENGTH, $store);
 	}
+	
+	/**
+	 * Retrieve search query parameter name
+	 *
+	 * @return string
+	 */
+	public function getQueryParamName()
+	{
+		return self::QUERY_VAR_NAME;
+	}
 
 	/**
 	 * Wrapper for getQueryText method
