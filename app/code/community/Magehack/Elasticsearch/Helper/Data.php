@@ -521,6 +521,17 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $this->_queryText;
 	}
+	
+	/**
+	 * Retrieve maximum query length
+	 *
+	 * @param mixed $store
+	 * @return int
+	 */
+	public function getMaxQueryLength($store = null)
+	{
+		return Mage::getStoreConfig(Mage_CatalogSearch_Model_Query::XML_PATH_MAX_QUERY_LENGTH, $store);
+	}
 
 	/**
 	 * Wrapper for getQueryText method
