@@ -1,16 +1,7 @@
 <?php
 /**
- * Observer model
  *
- * @category    GPMD
- * @package     Magehack_Elasticsearch
- * @copyright
- * @license
- */
-
-/**
- *
- * @category    GPMD
+ * @category    Magehack 
  * @package     Magehack_Elasticsearch
  * @author      Carlo Tasca <dev@gpmd.net>
  */

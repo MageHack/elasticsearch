@@ -1,22 +1,17 @@
 <?php
+
 /**
- * Magento
- * 
  * This class extends Mage_CatalogSearch_Model_Resource_Fulltext_Collection
+ * Provides custom functionality for Mage_CatalogSearch_Model_Resource_Fulltext_Collection
  * 
  * Mage_CatalogSearch_Model_Resource_Fulltext_Collection extends Mage_Catalog_Model_Resource_Product_Collection
  * which extends Mage_Catalog_Model_Resource_Collection_Abstract
  *
- */
-
-
-/**
- * Provides custom functionality for Mage_CatalogSearch_Model_Resource_Fulltext_Collection
- *
- * @category    GPMD
+ * @category    Magehack
  * @package     Magehack_Elasticsearch
  * @author      Carlo Tasca
  */
+
 class Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection extends Mage_CatalogSearch_Model_Resource_Fulltext_Collection
 {
 	protected $_elasticCollectionSize = false;
