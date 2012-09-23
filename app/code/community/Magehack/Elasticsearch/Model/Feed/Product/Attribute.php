@@ -278,12 +278,10 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 			/**
 			 *@todo We'll need to be able to determine boolean types. At the mo, getting only frontend values 
 			 */
-			if($value = $this->_attribute->getFrontend()->getValue($this->getProduct())){
-				return 'backend value NULL (not from method) ' . $aId;
-			}	
+			return $this->_attribute->getFrontend()->getValue($this->getProduct());	
 		}
 		
-		return 'returned backend value NULL ' . $aId;
+		return NULL;
 	}
 	
 	public function toCreateMap(&$parent_array){

@@ -27,15 +27,15 @@
 				<class>Magehack_Elasticsearch_Block</class>
 			</elasticsearch>
 			<catalogsearch>
-                <rewrite>
-                    <result>Magehack_Elasticsearch_Block_CatalogSearch_Result</result>
-                </rewrite>
-                <args>
-                    <modules>
-                        <magehack_elasticsearch before="Mage_CatalogSearch">Magehack_Elasticsearch</magehack_elasticsearch>
-                    </modules>
-                </args>
-            </catalogsearch>
+				<rewrite>
+					<result>Magehack_Elasticsearch_Block_CatalogSearch_Result</result>
+				</rewrite>
+				<args>
+					<modules>
+						<magehack_elasticsearch before="Mage_CatalogSearch">Magehack_Elasticsearch</magehack_elasticsearch>
+					</modules>
+				</args>
+			</catalogsearch>
 			<adminhtml>
 				<rewrite>
 					<catalog_product_attribute_edit_tabs>Magehack_Elasticsearch_Block_Attribute_Edit_Tabs</catalog_product_attribute_edit_tabs>
@@ -68,26 +68,26 @@
 			</elasticsearch_mysql4>
 		</models>
 		<resources>
-            <elasticsearch_setup>
-                <setup>
-                    <module>Magehack_Elasticsearch</module>
-                </setup>
-                <connection>
-                    <use>core_setup</use>
-                </connection>
-            </elasticsearch_setup>
-            <elasticsearch_write>
-                <connection>
-                    <use>core_write</use>
-                </connection>
-            </elasticsearch_write>
-            <elasticsearch_read>
-                <connection>
-                    <use>core_read</use>
-                </connection>
-            </elasticsearch_read>
-        </resources>
-	<events>
+			<elasticsearch_setup>
+				<setup>
+					<module>Magehack_Elasticsearch</module>
+				</setup>
+				<connection>
+					<use>core_setup</use>
+				</connection>
+			</elasticsearch_setup>
+			<elasticsearch_write>
+				<connection>
+					<use>core_write</use>
+				</connection>
+			</elasticsearch_write>
+			<elasticsearch_read>
+				<connection>
+					<use>core_read</use>
+				</connection>
+			</elasticsearch_read>
+		</resources>
+		<events>
 			<catalogsearch_index_process_start>
 				<observers>
 					<elasticsearch_catalog_entity_attribute_save_after>
@@ -95,33 +95,65 @@
 						<method>reindex</method>
 					</elasticsearch_catalog_entity_attribute_save_after>
 				</observers>
-                        </catalogsearch_index_process_start>
-	</events>
+			</catalogsearch_index_process_start>
+			<catalog_product_delete_before>
+				<observers>
+					<elasticsearch_catalog_product_delete_before>
+						<class>elasticsearch/events_observer</class>
+						<method>catalogProductDeleteBefore</method>
+					</elasticsearch_catalog_product_delete_before>
+				</observers>
+			</catalog_product_delete_before>
+			<cataloginventory_stock_item_save_after>
+				<observers>
+					<elasticsearch_cataloginventory_stock_item_save_after>
+						<class>elasticsearch/events_observer</class>
+						<method>catalogInventoryStockItemSaveAfter</method>
+					</elasticsearch_cataloginventory_stock_item_save_after>
+				</observers>
+			</cataloginventory_stock_item_save_after>
+			<catalog_entity_attribute_save_before>
+				<observers>
+					<elasticsearch_catalog_entity_attribute_save_before>
+						<class>elasticsearch/events_observer</class>
+						<method>catalogEntityAttributeSaveBefore</method>
+					</elasticsearch_catalog_entity_attribute_save_before>
+				</observers>
+			</catalog_entity_attribute_save_before>
+			<catalog_entity_attribute_delete_after>
+				<observers>
+					<elasticsearch_catalog_entity_attribute_delete_after>
+						<class>elasticsearch/events_observer</class>
+						<method>catalogEntityAttributeDeleteAfter</method>
+					</elasticsearch_catalog_entity_attribute_delete_after>
+				</observers>
+			</catalog_entity_attribute_delete_after>
+		</events>
 	</global>
 	<frontend>
 		<routers>
-            <elasticsearch>
-                <use>standard</use>
-                <args>
-                    <module>Magehack_Elasticsearch</module>
-                    <frontName>elasticsearch</frontName>
-                </args>
-            </elasticsearch>
-            <catalog>
+			<elasticsearch>
+				<use>standard</use>
+				<args>
+					<module>Magehack_Elasticsearch</module>
+					<frontName>elasticsearch</frontName>
+				</args>
+			</elasticsearch>
+			<catalog>
 				<args>
 					<modules>
 						<magehack_elasticsearch before="Mage_Catalog">Magehack_Elasticsearch</magehack_elasticsearch>
 					</modules>
 				</args>
 			</catalog>
-        </routers>
+		</routers>
 		<layout>
-            <updates>
-                <elasticsearch>
-                    <file>elasticsearch.xml</file>
-                </elasticsearch>
-            </updates>
-        </layout>
+			<updates>
+				<elasticsearch>
+					<file>elasticsearch.xml</file>
+				</elasticsearch>
+			</updates>
+		</layout>
 	</frontend>
 	<adminhtml>
 		<events>

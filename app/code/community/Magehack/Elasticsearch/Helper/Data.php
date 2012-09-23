@@ -290,9 +290,9 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		$types = Mage::getModel('elasticsearch/etype')->getCollection();
 		$queue = Mage::getModel('elasticsearch/queue');
-		/* @var $queue GPMD_Elasticsearch_Model_Queue */
+		/* @var $queue Magehack_Elasticsearch_Model_Queue */
 		foreach ($types as $etype) {
-			/* @var $etype GPMD_Elasticsearch_Model_Etype */
+			/* @var $etype Magehack_Elasticsearch_Model_Etype */
 			$feed_model = $etype->getFeedModel();
 			$result = $queue->addAllItems($feed_model->getAllItems());
 			if (!$result) {
@@ -303,6 +303,20 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 				$feed_model->generateAndPush();
 			}
 		}
+	}
+	
+	public function isRealtime($config = array())
+	{
+		return ($this->getScheduleType($config) == Magehack_Elasticsearch_Model_Options_Schedule::TYPE_REALTIME) ? TRUE : FALSE;
+	}
+	
+	public function getScheduleType($config = array())
+	{
+		$schedule_type = FALSE;
+		if (!empty($config) && isset($config[self::XML_PATH_SCHEDULE_TYPE])) {
+			$schedule_type = $config[self::XML_PATH_SCHEDULE_TYPE];
+		}
+		return ($schedule_type) ? $schedule_type : Mage::getStoreConfig(self::XML_PATH_SCHEDULE_TYPE);
 	}
 
 	/**
