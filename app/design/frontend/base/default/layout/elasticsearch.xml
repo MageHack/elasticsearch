@@ -7,7 +7,7 @@
 		</reference>
 		<reference name="header" >
             <block type="elasticsearch/form_mini" name="elastic.top.search" as="topSearch" template="catalogsearch/form.mini.phtml">
-				<action method="setTemplate" ifconfig="elasticsearch/globals/minienabled">
+				<action method="setTemplate">
 					<template>elasticsearch/form.mini.phtml</template>
 				</action>
 			</block>

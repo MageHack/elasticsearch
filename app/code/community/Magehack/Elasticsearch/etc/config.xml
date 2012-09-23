@@ -26,6 +26,7 @@
 			<elasticsearch>
 				<class>Magehack_Elasticsearch_Block</class>
 			</elasticsearch>
+			<!--
 			<catalogsearch>
 				<rewrite>
 					<result>Magehack_Elasticsearch_Block_CatalogSearch_Result</result>
@@ -36,6 +37,16 @@
 					</modules>
 				</args>
 			</catalogsearch>
+                <rewrite>
+                    <result>Magehack_Elasticsearch_Block_CatalogSearch_Result</result>
+                </rewrite>
+                <args>
+                    <modules>
+                        <magehack_elasticsearch before="Mage_CatalogSearch">Magehack_Elasticsearch</magehack_elasticsearch>
+                    </modules>
+                </args>
+            </catalogsearch>
+			-->
 			<adminhtml>
 				<rewrite>
 					<catalog_product_attribute_edit_tabs>Magehack_Elasticsearch_Block_Attribute_Edit_Tabs</catalog_product_attribute_edit_tabs>
