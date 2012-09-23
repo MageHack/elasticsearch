@@ -97,6 +97,7 @@
 			</elasticsearch_read>
 		</resources>
 		<events>
+			<!--
 			<catalogsearch_index_process_start>
 				<observers>
 					<elasticsearch_catalog_entity_attribute_save_after>
@@ -105,6 +106,7 @@
 					</elasticsearch_catalog_entity_attribute_save_after>
 				</observers>
 			</catalogsearch_index_process_start>
+			-->
 			<catalog_product_delete_before>
 				<observers>
 					<elasticsearch_catalog_product_delete_before>
