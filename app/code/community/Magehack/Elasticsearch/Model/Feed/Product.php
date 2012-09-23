@@ -1,24 +1,14 @@
 <?php
 
 /**
- * Magento
- *
- *
- * @category    GPMD
- * @package     Magehack_Elasticsearch
- * @author      Carlo Tasca
- */
-
-/**
  * Catalog layer category filter
  *
- * @category    GPMD
+ * @category    Magehack
  * @package     Magehack_Elasticsearch
  * @author      Carlo Tasca
  */
 class Magehack_Elasticsearch_Model_Feed_Product extends Magehack_Elasticsearch_Model_Feed_Abstract
 {
-
 	protected static $attributes = array();
 
 	protected $_type = 'product';

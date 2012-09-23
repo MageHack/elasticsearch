@@ -14,8 +14,5 @@ class Magehack_Elasticsearch_Block_Form_Mini extends Mage_Core_Block_Template {
 	
 	public function __construct() {
 		parent::__construct();
-		$this->helper('elasticsearch')->log('Magehack_Elasticsearch_Block_Form_Mini::__construct invokation');
 	}
 }
-
-?>
