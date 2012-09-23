@@ -2,7 +2,6 @@
 
 class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 {
-	
 	const XML_PATH_GLOBAL_ENABLED = 'elasticsearch/globals/enabled';
 	const XML_PATH_HAS_WILDCARD = 'elasticsearch/globals/has_wildcard';
 	const XML_PATH_INDEX_NAME = 'elasticsearch/index/name';
@@ -20,31 +19,31 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	const QUERY_VAR_NAME = 'q';
 	const MAX_QUERY_LEN = 200;
 	const CONTROLLER_SEARCH_RESULT_ACTION = 'elasticsearch/result';
-	
+
 	protected $_storeId = 0;
 	protected $_moduleName = 'elasticsearch';
-	
+
 	/**
 	 *
-	 * @var Magehack_Elasticsearch_Helper_Inflector 
+	 * @var Magehack_Elasticsearch_Helper_Inflector
 	 */
 	protected $_inflector;
 
-	
+
 	public function __construct()
 	{
 		$this->_storeId = Mage::app()->getStore()->getStoreId();
 	}
-	
-	
+
+
 	/**
 	 * Magic method __call handles methods starting with:
-	 * 
+	 *
 	 * getConfig********(config node)
-	 * 
+	 *
 	 * @param string $name
 	 * @param array $arguments
-	 * @return mixed 
+	 * @return mixed
 	 */
 	public function __call($name, $arguments)
 	{
@@ -54,11 +53,11 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 			return $this->getModuleConfig($this->_moduleName, $arguments[0], $inflectedName);
 		}
 	}
-	
-	
+
+
 	/**
-	 * 
-	 * @return Magehack_Elasticsearch_Helper_Inflector 
+	 *
+	 * @return Magehack_Elasticsearch_Helper_Inflector
 	 */
 	public function getInflector()
 	{
@@ -68,27 +67,27 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		return Mage::helper('elasticsearch/inflector');
 	}
 
-	
+
 	/**
 	 * Logging helper
-	 * 
+	 *
 	 * @param type $message
-	 * @param type $level 
+	 * @param type $level
 	 */
 	public function log($message, $level = null)
 	{
 		Mage::log($message, $level, 'magehack_elasticsearch.log');
 	}
 
-	
-	
+
+
 	/**
 	 *  Gets store config value for node and key passed as argument.
-	 * 
+	 *
 	 * @param string $moduleName
 	 * @param string $node
 	 * @param string $key
-	 * @return mixed 
+	 * @return mixed
 	 */
 	protected function getModuleConfig($moduleName, $node, $key)
 	{
@@ -97,8 +96,8 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 
 	/**
 	 * Returns store id
-	 * 
-	 * @return int 
+	 *
+	 * @return int
 	 */
 	public function getStoreId()
 	{
@@ -109,29 +108,29 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	}
 	/**
 	 * Returns customer session singleton
-	 * @return type 
+	 * @return type
 	 */
 	public function getCustomerSession()
 	{
 		return Mage::getSingleton('customer/session');
 	}
-	
+
 	/**
 	 * Is module enabled, determined via:
-	 * 
+	 *
 	 * @see XML_PATH_GLOBAL_ENABLED
-	 * 
+	 *
 	 * @return boolean
 	 */
 	public function isEnabled()
 	{
 		return $this->getConfigIsEnabled('globals');
 	}
-	
+
 	/**
 	 * Return product type ids that this module can handle
-	 * 
-	 * @return type 
+	 *
+	 * @return type
 	 */
 	public function getSupportedProductTypes()
 	{
@@ -141,13 +140,13 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 			Mage_Catalog_Model_Product_Type::TYPE_GROUPED
 		);
 	}
-	
+
 	/**
 	 * Takes a string and determines if it is prefixed with a '-'
-	 * 
+	 *
 	 * e.g. '-Analyzer' returns TRUE
 	 * 		'Analyzer' returns FALSE
-	 * 
+	 *
 	 * @param string $string
 	 * @param array $exceptions
 	 * @return FALSE | string
@@ -157,7 +156,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$string = trim($string);
 		// If first character is '-'
 		if (strstr($string, '-', true) === '') {
-			// Remove first character form $string so we can 
+			// Remove first character form $string so we can
 			// match in original array and unset
 			$real_string = substr($string, 1);
 			if (!empty($exceptions)) {
@@ -173,14 +172,14 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 
 		return FALSE;
 	}
-	
+
 	/**
 	 * Convert Magento model class name to getModel class string
-	 * 
+	 *
 	 * e.g. 'Mage_Catalog_Model_Product' returns 'catalog/product'
-	 * 
+	 *
 	 * @param Varien_Object $item
-	 * @return string 
+	 * @return string
 	 */
 	public function generateClassString(Varien_Object $item)
 	{
@@ -201,11 +200,11 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 
 		return strtolower($module . '/' . implode('_', $parts));
 	}
-	
+
 	/**
-	 * Compares current and original data values of an object to determine if it 
+	 * Compares current and original data values of an object to determine if it
 	 * has changed or is new (and so requires saving)
-	 * 
+	 *
 	 * @param Mage_Core_Model_Abstract $object Model to check
 	 * @param array $keys Data keys to compare, along with optional casting
 	 */
@@ -237,7 +236,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $changed;
 	}
-	
+
 	protected function _castToList($value)
 	{
 		if (is_array($value)) {
@@ -256,7 +255,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		return sprintf("%01.2f", $value);
 	}
-	
+
 	/**
 	 * Remaps and then reindexs all the available Etypes
 	 */
@@ -268,16 +267,16 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 
 	/**
 	 * Reindexes all available Etypes
-	 * 
+	 *
 	 * @param boolean $force force a generate and push on all types
 	 */
 	public function reindexAll($force = TRUE)
 	{
 		$types = Mage::getModel('elasticsearch/etype')->getCollection();
 		$queue = Mage::getModel('elasticsearch/queue');
-		/* @var $queue GPMD_Elasticsearch_Model_Queue */
+		/* @var $queue Magehack_Elasticsearch_Model_Queue */
 		foreach ($types as $etype) {
-			/* @var $etype GPMD_Elasticsearch_Model_Etype */
+			/* @var $etype Magehack_Elasticsearch_Model_Etype */
 			$feed_model = $etype->getFeedModel();
 			$result = $queue->addAllItems($feed_model->getAllItems());
 			if (!$result) {
@@ -287,11 +286,15 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 			if ($this->isRealtime() || $force) {
 				$feed_model->generateAndPush();
 			}
+
+			$queue->deleteProcessedItems($etype);
 		}
+
+
 	}
 
 	/**
-	 * Recreates elasticsearch index, all data is lost after calling this 
+	 * Recreates elasticsearch index, all data is lost after calling this
 	 */
 	public function remap()
 	{
@@ -299,17 +302,17 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$elasticsearch->deleteIndex();
 		$elasticsearch->refreshIndex();
 	}
-	
+
 	/**
 	 * Gets option attribute value by id.
-	 * 
+	 *
 	 * Takes attribute id as argument and loops through options value
 	 * to find a match.
-	 * 
+	 *
 	 * If found, it returns it, or returns false otherwise
-	 * 
+	 *
 	 * @param type $arg_id
-	 * @return type 
+	 * @return type
 	 */
 	public function getAttributeOptionValueById($arg_id)
 	{
@@ -326,14 +329,16 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return false;
 	}
-	
-	
+
+
 	public function addLnav($url){
 		if(strpos($url, 'l=0')===false&&strpos($url, 'l=1'===false)){
 			$url .= '&l=0';
 		}
 		return $url;
 	}
+
+
 	public function addLnav1($url){
 		$search = array('&l=0','l=0','%26l%3d0');
 		$url = str_replace($search,'',$url);
@@ -342,6 +347,8 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $url;
 	}
+
+
 	public function clearLnav($url){
 		$search = array('&l=1','l=1','%26l%3d1','#%21l=1','%23!l%3d1','#!l=1');
 		return str_replace($search,'',$url);
