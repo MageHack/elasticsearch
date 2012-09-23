@@ -54,10 +54,10 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 			return $this->getModuleConfig($this->_moduleName, $arguments[0], $inflectedName);
 		}
 	}
-	
+
 	/**
 	 * Returns config
-	 * @return int 
+	 * @return int
 	 */
 	public function getSearchQueryLimit()
 	{
@@ -409,11 +409,14 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$defaultFilters = $this->getElasticsearchDefaultFilters();
 
 		// adding customer session filters
+		/**
 		$customerSessionFilters = $this->getElasticFilters();
 
 		foreach ($customerSessionFilters as $filter) {
 			$filters[] = $filter;
 		}
+		*/
+		
 		// merging argument filters
 		$filters = array_merge($defaultFilters, $filters);
 
@@ -530,7 +533,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $this->_queryText;
 	}
-	
+
 	public function getLimitParam(){
 		return $this->_getRequest()->getParam($this->getLimitParamName());
 	}
@@ -555,7 +558,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		return self::QUERY_VAR_NAME;
 	}
-	
+
 	/**
 	 * Retrieve limit query parameter name
 	 *
@@ -570,17 +573,17 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	 * Wrapper for getQueryText method
 	 *
 	 * Just here in case we'll need to extend its functionality in ES
-	 * 
-	 * @return string 
+	 *
+	 * @return string
 	 */
 	public function getEqueryText()
 	{
 		return $this->getQueryText();
 	}
-	
+
 	/**
 	 * @todo Fix hard coded path
-	 * @return string 
+	 * @return string
 	 */
 	public function getEqueryPath()
 	{
