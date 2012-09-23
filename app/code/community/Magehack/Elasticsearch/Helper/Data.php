@@ -382,4 +382,113 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$search = array('&l=1','l=1','%26l%3d1','#%21l=1','%23!l%3d1','#!l=1');
 		return str_replace($search,'',$url);
 	}
+	
+	/**
+	 * Api doSearch wrapper
+	 * 
+	 * @param array $filters
+	 * @param array $facets
+	 * @param string $from
+	 * @param string $limit
+	 * @param array $sort
+	 * @return type 
+	 */
+	public function search($filters = array(), $facets = array(), $from = false, $limit = false, $sort = array())
+	{
+		$api = Mage::getModel('elasticsearch/api_elasticsearch');
+		// adding default filters
+		$defaultFilters = $this->getElasticsearchDefaultFilters();
+		
+		// adding customer session filters
+		$customerSessionFilters = $this->getElasticFilters();
+
+		foreach ($customerSessionFilters as $filter) {
+			$filters[] = $filter;
+		}
+		// merging argument filters
+		$filters = array_merge($defaultFilters, $filters);
+
+		if ($limit === false) {
+			$limit = $this->getSearchQueryLimit();
+		}
+		$wildcard = $this->hasWildcard() ? '*' : ''; 
+		return $api->doSearch($this->getEqueryText() . $wildcard, $filters, $facets, $from, $limit, $sort);
+	}
+	
+	/**
+	 * Returns elastic search default filters array
+	 * 
+	 * @return array 
+	 */
+	public function getElasticsearchDefaultFilters()
+	{
+		$storeFilter = $this->getElasticsearchStoreFilter();
+		$productStatusFilter = $this->getProductStatusFilter();
+		$visibilityFilter = $this->getProductVisibilityFilter();
+		return array($storeFilter, $productStatusFilter, $visibilityFilter);
+	}
+	
+	/**
+	 * Returns store_id Elastic_Filter_Terms
+	 * 
+	 * @return \Elastica_Filter_Term 
+	 */
+	public function getElasticsearchStoreFilter()
+	{
+
+		return $this->getElasticaFilterTerm('store_id', $this->getStoreId());
+	}
+	
+	/**
+	 * Returns instance of ElasticaFilterTerm
+	 * 
+	 * @param string $tag
+	 * @param string $term
+	 * @return \Elastica_Filter_Term 
+	 */
+	public function getElasticaFilterTerm($tag, $term)
+	{
+		return new Elastica_Filter_Term(array($tag => $term));
+	}
+	
+	/**
+	 * Returns instance of Elastica_Filter_Terms
+	 * 
+	 * @param string $tag
+	 * @param array $terms
+	 * @return \Elastica_Filter_Terms 
+	 */
+	public function getElasticaFilterTerms($tag, $terms = array())
+	{
+		$filter = new Elastica_Filter_Terms();
+		$filter->setTerms($tag, $terms);
+		return $filter;
+	}
+	
+	public function getProductStatusFilter()
+	{
+		return $this->getElasticaFilterTerm('status', 'enabled');
+	}
+
+	/**
+	 * Returns Elastica product visibility filter
+	 * @return \Elastica_Filter_Or 
+	 */
+	public function getProductVisibilityFilter()
+	{
+		/**
+		*@todo use visibilities from  product visibility model
+		*/
+		
+		//$visibilities = Mage::getSingleton('catalog/product_visibility')->getVisibleInSiteIds();
+		
+		$visibilityCatalog = $this->getElasticaFilterTerm('visibility', '2');
+		$visibilitySearch = $this->getElasticaFilterTerm('visibility', '3');
+		$visibilityCatalogSearch = $this->getElasticaFilterTerm('visibility', '4');
+		$orFilter = new Elastica_Filter_Or();
+		$orFilter->addFilter($visibilityCatalog);
+		$orFilter->addFilter($visibilitySearch);
+		$orFilter->addFilter($visibilityCatalogSearch);
+		return $orFilter;
+	}
 }
