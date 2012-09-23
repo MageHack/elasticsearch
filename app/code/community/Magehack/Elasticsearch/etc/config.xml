@@ -31,15 +31,6 @@
 				<rewrite>
 					<result>Magehack_Elasticsearch_Block_CatalogSearch_Result</result>
 				</rewrite>
-				<args>
-					<modules>
-						<magehack_elasticsearch before="Mage_CatalogSearch">Magehack_Elasticsearch</magehack_elasticsearch>
-					</modules>
-				</args>
-			</catalogsearch>
-                <rewrite>
-                    <result>Magehack_Elasticsearch_Block_CatalogSearch_Result</result>
-                </rewrite>
                 <args>
                     <modules>
                         <magehack_elasticsearch before="Mage_CatalogSearch">Magehack_Elasticsearch</magehack_elasticsearch>

@@ -1,6 +1,6 @@
 <?php
 
-class Magehack__Elasticsearch_Block_Layer_Filter_Attribute extends Mage_Catalog_Block_Layer_Filter_Abstract
+class Magehack_Elasticsearch_Block_Layer_Filter_Attribute extends Mage_Catalog_Block_Layer_Filter_Abstract
 {
     public function __construct()
     {
