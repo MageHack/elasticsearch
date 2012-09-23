@@ -22,7 +22,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 
 	protected $_storeId = 0;
 	protected $_moduleName = 'elasticsearch';
-
+	protected $_queryText = NULL;
 	/**
 	 *
 	 * @var Magehack_Elasticsearch_Helper_Inflector
@@ -410,7 +410,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		if ($limit === false) {
 			$limit = $this->getSearchQueryLimit();
 		}
-		$wildcard = $this->hasWildcard() ? '*' : '';
+		$wildcard = $this->getConfigHasWildcard('globals') ? '*' : '';
 		return $api->doSearch($this->getEqueryText() . $wildcard, $filters, $facets, $from, $limit, $sort);
 	}
 
@@ -546,12 +546,21 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	 * Wrapper for getQueryText method
 	 *
 	 * Just here in case we'll need to extend its functionality in ES
-	 *
-	 * @return type
+	 * 
+	 * @return string 
 	 */
 	public function getEqueryText()
 	{
 		return $this->getQueryText();
+	}
+	
+	/**
+	 * @todo Fix hard coded path
+	 * @return string 
+	 */
+	public function getEqueryPath()
+	{
+		return 'magehack/_search';
 	}
 
 }

@@ -74,7 +74,7 @@ class Magehack_Elasticsearch_Block_Layer extends Magehack_Elasticsearch_Block_La
             ->getConfig(Mage_CatalogSearch_Model_Layer::XML_PATH_DISPLAY_LAYER_COUNT);
 
 		$resultSet = Mage::helper('elasticsearch')->search();
-		
+
         if (!$availableResCount
             || ($availableResCount>=$this->getLayer()->setElasticCollection($resultSet)->getProductCollection()->getSize())) {
             return parent::canShowBlock();
