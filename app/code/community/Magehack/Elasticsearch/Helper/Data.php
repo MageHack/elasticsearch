@@ -33,7 +33,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	
 	public function __construct()
 	{
-		$this->_storeId = Mage::app()->getStore()->getStoreId();
+		//$this->_storeId = Mage::app()->getStore()->getStoreId();
 	}
 	
 	
@@ -117,9 +117,10 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	public function getStoreId()
 	{
 		if (Mage::app()->isSingleStoreMode()) {
-			return 0;
+			$this->_storeId = 0;
+			return $this->_storeId;
 		}
-		return Mage::app()->getStore()->getId();
+		return $this->_storeId = Mage::app()->getStore()->getId();
 	}
 	/**
 	 * Returns customer session singleton

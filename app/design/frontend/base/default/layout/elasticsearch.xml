@@ -5,6 +5,13 @@
             <action method="addItem" ifconfig="elasticsearch/globals/enabled"><type>skin_js</type><name>js/vpager.js</name></action>
             <action method="addItem" ifconfig="elasticsearch/globals/enabled"><type>skin_css</type><name>css/vpager.css</name></action>
 		</reference>
+		<reference name="header" >
+            <block type="elasticsearch/form_mini" name="elastic.top.search" as="topSearch" template="catalogsearch/form.mini.phtml">
+				<action method="setTemplate" ifconfig="elasticsearch/globals/minienabled">
+					<template>elasticsearch/form.mini.phtml</template>
+				</action>
+			</block>
+        </reference>
 	</default>
     <catalog_category_ajax_view>
 		<block type="core/template" name="root" output="toHtml" template="page/html/wrapper.phtml">
@@ -37,6 +44,7 @@
             </block>
         </block>
     </catalog_category_layered_ajax>
+	
     <catalogsearch_result_ajax>
         <block type="core/template" name="root" output="toHtml" template="page/html/wrapper.phtml">
             <action method="setId"><id>layered-container</id></action>
@@ -65,4 +73,31 @@
             </block>
         </block>
     </catalogsearch_result_ajax>
+	
+	
+	<elasticsearch_result_index translate="label">
+        <label>Quick Search Form</label>
+        <reference name="root">
+            <action method="setTemplate"><template>page/3columns.phtml</template></action>
+        </reference>
+        <reference name="left">
+            <block type="elasticsearch/layer" name="catalogsearch.leftnav" after="currency" template="elasticsearch/layer/view.phtml"/>
+        </reference>
+        <reference name="content">
+             <block type="elasticsearch/search_result" as="search.result" name="elastic.search.result" template="elasticsearch/result.phtml">
+                <block type="elasticsearch/product_list" name="elastic.search.result.list" as="search_result_list" template="elasticsearch/product/list.phtml">
+                    <block type="elasticsearch/product_list_toolbar" name="product_list_toolbar" template="elasticsearch/product/list/toolbar.phtml">
+                        <block type="elasticsearch/page_html_pager" name="product_list_toolbar_pager"/>
+                    </block>
+                    <action method="addColumnCountLayoutDepend"><layout>empty</layout><count>6</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>one_column</layout><count>5</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_left</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>two_columns_right</layout><count>4</count></action>
+                    <action method="addColumnCountLayoutDepend"><layout>three_columns</layout><count>3</count></action>
+                    <action method="setToolbarBlockName"><name>product_list_toolbar</name></action>
+                </block>
+            </block>
+        </reference>
+    </elasticsearch_result_index>
+	
 </layout>
