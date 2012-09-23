@@ -9,10 +9,10 @@ class Magehack_Elasticsearch_Model_Layer_State extends Mage_Catalog_Model_Layer_
 	 * Adds elasticsearch filter to layer state.
 	 * Filters are also set in customer session var and retrievable via
 	 * [customer_session]->getElasticFilters()
-	 * 
-	 * 
+	 *
+	 *
 	 * @param string $key
-	 * @param Elastica_Filter_Abstract $filter 
+	 * @param Elastica_Filter_Abstract $filter
 	 */
 	public function addElasticFilter($key, Elastica_Filter_Abstract $filter)
 	{
@@ -20,13 +20,13 @@ class Magehack_Elasticsearch_Model_Layer_State extends Mage_Catalog_Model_Layer_
 		$this->_elasticFilters[$key] = $filter;
 		Mage::helper('elasticsearch')->getCustomerSession()->setElasticFilters($this->_elasticFilters);
 	}
-	
+
 	/**
 	 * Returns elasticsearch filters array in customer session
-	 * 
-	 * @return array 
+	 *
+	 * @return array
 	 */
-	public function getElasticFilters () 
+	public function getElasticFilters ()
 	{
 		return $this->_elasticFilters;
 	}
@@ -38,10 +38,10 @@ class Magehack_Elasticsearch_Model_Layer_State extends Mage_Catalog_Model_Layer_
 	 * @param   Elastica_Filter_Abstract $filter
 	 * @return  Magehack_Elasticsearch_Model_Layer_State
 	 */
-	public function addFilter($key, $filter)
+	public function addFilter($filter)
 	{
 		$filters = $this->getFilters();
-		$filters[$key] = $filter;
+		//$filters[$key] = $filter;
 		$this->setFilters($filters);
 		return $this;
 	}
@@ -78,7 +78,7 @@ class Magehack_Elasticsearch_Model_Layer_State extends Mage_Catalog_Model_Layer_
 	}
 
 	/**
-	 * Unsets session elasticsearch filters 
+	 * Unsets session elasticsearch filters
 	 */
 	protected function _unsElasticFilters()
 	{
