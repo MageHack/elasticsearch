@@ -40,8 +40,15 @@
 				<rewrite>
 					<catalog_product_attribute_edit_tabs>Magehack_Elasticsearch_Block_Attribute_Edit_Tabs</catalog_product_attribute_edit_tabs>
 				</rewrite>
-			</adminhtml>	
+			</adminhtml>
 		</blocks>
+        <index>
+            <indexer>
+                <elasticsearch_summary>
+                    <model>elasticsearch/indexer_summary</model>
+                </elasticsearch_summary>
+            </indexer>
+        </index>
 		<helpers>
 			<elasticsearch>
 				<class>Magehack_Elasticsearch_Helper</class>

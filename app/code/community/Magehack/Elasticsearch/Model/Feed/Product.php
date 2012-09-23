@@ -2,7 +2,7 @@
 
 /**
  * Magento
- * 
+ *
  *
  * @category    GPMD
  * @package     Magehack_Elasticsearch
@@ -20,21 +20,21 @@ class Magehack_Elasticsearch_Model_Feed_Product extends Magehack_Elasticsearch_M
 {
 
 	protected static $attributes = array();
-	
+
 	protected $_type = 'product';
-	
+
 	protected $_attributeMapOverrides = array();
 
 	/**
-	 * Allows overriding of any default attribute mappings, 
+	 * Allows overriding of any default attribute mappings,
 	 * key on attribute code see product feed attribute for value examples.
-	 * 
+	 *
 	 * e.g. $name = 'sku', $values = array('_getType' => 'integer', '_nullValue' => 000000)
-	 * 
+	 *
 	 * @see Magehack_Elasticsearch_Model_Feed_Product_Attribute
-	 * 
+	 *
 	 * @param string $name
-	 * @param array $values 
+	 * @param array $values
 	 */
 	public function setAttributeMapOverride($name, $values)
 	{
@@ -83,11 +83,11 @@ class Magehack_Elasticsearch_Model_Feed_Product extends Magehack_Elasticsearch_M
 		$this->_feedArray = array();
 		if ($this->_getHelper()->getStaticMembersReset()) {
 			Mage::helper('elasticsearch')->log('Resetting static attributes');
-					
+
 			self::$attributes = array();
 		}
 		foreach ($items as $item) {
-			$doc = new Elastica_Document($item->getData('model_id'), null, $this->getTypeName(), $this->getIndexName());
+			$doc = new Elastica_Document($item->getData('model_id'), array(), $this->getTypeName(), $this->getIndexName());
 			// If we are updating we have to delete the item first, delete's don't throw errors if ID doesn't exist
 			$this->_feedArray[] = array(
 				"delete" => $doc->toArray()
@@ -114,7 +114,7 @@ class Magehack_Elasticsearch_Model_Feed_Product extends Magehack_Elasticsearch_M
 	{
 		$data = array();
 		$product = $item->getModel();
-		
+
 		$static_key = $this->_eventPrefix . '_' . $product->getData('entity_type_id') . '_' . $product->getData('attribute_set_id') . '_' . $product->getData('type_id');
 
 		if (array_key_exists($static_key, self::$attributes)) {
@@ -137,7 +137,7 @@ class Magehack_Elasticsearch_Model_Feed_Product extends Magehack_Elasticsearch_M
 		$data['url_path'] = $product->getUrlPath();
 		$data['categories'] = $product->getCategoryIds();
 		$data['visibility'] = $product->getData('visibility');
-		
+
 		Mage::dispatchEvent($this->_eventPrefix . '_prepare_product_attributes_after', array("feed_product" => $this, "product" => $product, "data" => $data));
 		//$this->_getHelper()->log('Data:' . var_export(json_encode($data), true));
 		return $data;
@@ -151,7 +151,7 @@ class Magehack_Elasticsearch_Model_Feed_Product extends Magehack_Elasticsearch_M
 
 		$product_attribute = new Magehack_Elasticsearch_Model_Feed_Product_Attribute($attribute);
 
-		if (!$product_attribute->isIndexable()) {
+		if (!$product_attribute->isIndexable($attribute)) {
 			//Mage::helper('elasticsearch')->log(get_class($this)."::_formatAttribute() Attribute '{$current_name}' ignored");
 			return NULL;
 		}

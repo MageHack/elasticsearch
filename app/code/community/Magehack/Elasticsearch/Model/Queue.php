@@ -30,10 +30,10 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	}
 
 	/**
-	 * Add an item to the queue 
-	 * 
+	 * Add an item to the queue
+	 *
 	 * @param class $item
-	 * @param string $message 
+	 * @param string $message
 	 * @return bool
 	 */
 	public function addItem(Varien_Object $model, $message = NULL, $type = NULL) {
@@ -80,11 +80,11 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 
 	/**
 	 * Guess model type from magento class string
-	 * 
+	 *
 	 * e.g. 'catalog/product' returns 'product'
-	 * 
+	 *
 	 * @param string $model_class
-	 * @return string 
+	 * @return string
 	 */
 	protected function _guessModelType($model_class) {
 		$return_type = 'unknown';
@@ -101,10 +101,10 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 
 	/**
 	 * Add all supported products to the feed queue
-	 * 
+	 *
 	 * Returns false if any of the products were not added
-	 * 
-	 * @return bool 
+	 *
+	 * @return bool
 	 */
 	public function addAllSupportedProducts() {
 		$result = TRUE;
@@ -125,7 +125,7 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 
 		return $result;
 	}
-	
+
 	public function addAllItems(Varien_Data_Collection $collection){
 		$result = TRUE;
 		foreach ($collection as $item) {
@@ -134,17 +134,17 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 				$result = FALSE;
 			}
 		}
-		
+
 		return $result;
 	}
 
 	/**
 	 * Determine a queue item message for a product being added to the queue
-	 * 
+	 *
 	 * @TODO This only supports products at the moment!
-	 * 
+	 *
 	 * @param Mage_Catalog_Model_Product $product
-	 * @return string 
+	 * @return string
 	 */
 	protected function _getMessageForModel(Varien_Object $item) {
 		$changed = TRUE;
@@ -177,9 +177,9 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 
 	/**
 	 * Check if the product can be added to the queue
-	 * 
+	 *
 	 * @param Mage_Catalog_Model_Product $product
-	 * @return boolean 
+	 * @return boolean
 	 */
 	protected function _validateItem(Mage_Catalog_Model_Product $product) {
 		$valid = TRUE;
@@ -194,8 +194,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 
 	/**
 	 * Get the queue items collection
-	 * 
-	 * @return Magehack_Elasticsearch_Model_Mysql4_Queue_Item_Collection 
+	 *
+	 * @return Magehack_Elasticsearch_Model_Mysql4_Queue_Item_Collection
 	 */
 	public function getItems() {
 		return Mage::getModel('elasticsearch/queue_item')->getCollection();
@@ -205,17 +205,17 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 * Delete queue items marked as processed
 	 */
 	public function deleteProcessedItems($type = NULL) {
-		$items = $this->getItems()->addFieldToFilter('processed', 1);
-		if ($type) {
-			$items->addFieldToFilter('elasticsearch_etype.name', $type);
+		$items = $this->getProcessedItems($type);
+		foreach ($items as $item)
+		{
+			//$item->delete();
 		}
-		$items->walk('delete');
 	}
 
 	/**
 	 * Get the collection of processed queue items
-	 * 
-	 * @return type 
+	 *
+	 * @return type
 	 */
 	public function getProcessedItems($type = NULL) {
 		$items = $this->getItems()->addFieldToFilter('processed', 1);
@@ -227,8 +227,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 
 	/**
 	 * Get the collection of unprocessed queue items
-	 * 
-	 * @return type 
+	 *
+	 * @return type
 	 */
 	public function getUnprocessedItems($type = NULL) {
 		$items = $this->getItems()->addFieldToFilter('processed', 0);
@@ -281,8 +281,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 
 	/**
 	 * Get full path to the lock directory
-	 * 
-	 * @return type 
+	 *
+	 * @return type
 	 */
 	protected function _getLockDir() {
 		return Mage::getBaseDir() . '/' . self::LOCK_DIR;
@@ -290,8 +290,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 
 	/**
 	 * Get full path to the lock file
-	 * 
-	 * @return type 
+	 *
+	 * @return type
 	 */
 	protected function _getLockFilePath() {
 		return $this->_getLockDir() . '/elasticsearch_queue.lock';

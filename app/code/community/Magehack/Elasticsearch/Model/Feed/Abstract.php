@@ -7,16 +7,16 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 
 	// Array of items and data to be indexed / updated
 	protected $_feedArray = array();
-	
+
 	// Type used in elasticsearch e.g. 'product'
 	protected $_type = NULL;
-	
+
 	// List of skipped queue items;
 	protected $_skipped = array();
-	
+
 	// Chunking for _bulk updates
-	protected $_chunkSize = 500;
-	
+	protected $_chunkSize = 200;
+
 	protected $_eClient;
 	/* @var $_eClient Elastica_Client */
 	protected $_eIndex;
@@ -25,20 +25,20 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	/* @var $_eType Elastica_Type */
 	protected $_eMap;
 	/* @var $_eMap Elastica_Type_Mapping */
-	
+
 	function __construct() {
-		
+
 		$this->_eClient = $this->_getElasticsearchApi()->getElasticaClient();
-		
+
 		$this->_eIndex = $this->_getElasticsearchApi()->getElasticaIndex();
-		
+
 		if(!$this->_type){
 			Mage::helper('elasticsearch')->log('Type not set on current class "'.get_class($this).'"');
 			Mage::throwException('Type not set on current class "'.get_class($this).'"');
 		}
-		
+
 		$this->_eType = $this->_eIndex->getType($this->_type);
-		
+
 		try{
 			$this->_eType->getMapping();
 		}catch(Elastica_Exception_Response $e){
@@ -63,19 +63,19 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 			Mage::throwException($e);
 		}
 	}
-	
+
 	/**
 	 *
-	 * @return Magehack_Elasticsearch_Model_Api_Elasticsearch 
+	 * @return Magehack_Elasticsearch_Model_Api_Elasticsearch
 	 */
 	protected function _getElasticsearchApi(){
 		if(!isset($this->_elasticsearch)){
 			$this->_elasticsearch = Mage::getModel('elasticsearch/api_elasticsearch');
 		}
-		
+
 		return $this->_elasticsearch;
 	}
-	
+
 	/**
 	 *
 	 * @return Magehack_Elasticsearch_Helper_Data
@@ -84,37 +84,37 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 		if(!isset($this->_helper)){
 			$this->_helper = Mage::helper('elasticsearch');
 		}
-		
+
 		return $this->_helper;
 	}
-	
+
 	/**
 	 *
-	 * @return Elastica_Client 
+	 * @return Elastica_Client
 	 */
 	public function getClient(){
 		return $this->_eClient;
 	}
-	
+
 	/**
 	 *
-	 * @return Elastica_Index 
+	 * @return Elastica_Index
 	 */
 	public function getIndex(){
 		return $this->_eIndex;
 	}
-	
+
 	/**
 	 *
-	 * @return Elastica_Type 
+	 * @return Elastica_Type
 	 */
 	public function getType(){
 		return $this->_eType;
 	}
-	
+
 	/**
 	 *
-	 * @return Elastica_Type_Mapping 
+	 * @return Elastica_Type_Mapping
 	 */
 	public function getMap(){
 		if(!isset($this->_eMap)){
@@ -122,27 +122,27 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 		}
 		return $this->_eMap;
 	}
-	
+
 	public function getTypeName(){
 		return $this->_type;
 	}
-	
+
 	protected function _addSkipped($id){
 		$this->_skipped[] = $id;
 	}
-	
+
 	public function getIndexName(){
 		return $this->getIndex()->getName();
 	}
-	
+
 	public function setChunkSize($size){
 		$this->_chunkSize = (int) $size;
 	}
-	
+
 	public function getChunkSize(){
 		return $this->_chunkSize;
 	}
-	
+
 	/**
 	 * Main method, called from Cron according to admin-set schedule
 	 */
@@ -167,8 +167,8 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 
 	/**
 	 * Generate the feed array, based on the items in the queue
-	 * 
-	 * @return boolean 
+	 *
+	 * @return boolean
 	 */
 	public function generate() {
 		$startTime = microtime(TRUE);
@@ -201,7 +201,7 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	 */
 	public function push() {
 		$this->_feedArray = array_chunk($this->_feedArray, $this->_chunkSize);
-		
+
 		foreach($this->_feedArray as $chunk => $data){
 			try{
 				$this->getClient()->bulk($data);
@@ -211,13 +211,13 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 			}
 		}
 	}
-	
+
 	/**
-	 * Returns key of last item in array with out modifiying original arrays 
+	 * Returns key of last item in array with out modifiying original arrays
 	 * internal pointer (pass by copy NOT reference)
-	 * 
+	 *
 	 * @see http://uk.php.net/manual/en/function.end.php#107733
-	 * 
+	 *
 	 * @param array $array
 	 * @return string | int
 	 */
@@ -229,20 +229,20 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	 * Returns queue items for this feed to process
 	 */
 	abstract protected function _getQueueItems();
-	
+
 	/**
 	 * Sets $this->_feedArray to a assoc array key'd on ID
-	 * 
+	 *
 	 */
 	abstract protected function _organiseData($items);
-	
+
 	/**
-	 * Returns array for type mapping 
+	 * Returns array for type mapping
 	 */
 	abstract public function getMapping();
-	
+
 	/**
-	 * Returns collection of all items to be indexed 
+	 * Returns collection of all items to be indexed
 	 */
 	abstract public function getAllItems();
 }
