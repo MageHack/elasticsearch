@@ -53,7 +53,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 			return $this->getModuleConfig($this->_moduleName, $arguments[0], $inflectedName);
 		}
 	}
-	
+
 	/**
 	 * Retrieve result page url and set "secure" param to avoid confirm
 	 * message when we submit form from secure page to unsecure
@@ -68,7 +68,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 					'_secure' => Mage::app()->getFrontController()->getRequest()->isSecure()
 				));
 	}
-	
+
 	/**
 	 *
 	 * @return Magehack_Elasticsearch_Helper_Inflector
@@ -302,17 +302,16 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 				$feed_model->generateAndPush();
 			}
 
-			$queue->deleteProcessedItems($etype);
+			//$queue->deleteProcessedItems($etype->getEtypeId());
+			$queue->deleteProcessedItems();
 		}
-
-
 	}
-	
+
 	public function isRealtime($config = array())
 	{
 		return ($this->getScheduleType($config) == Magehack_Elasticsearch_Model_Options_Schedule::TYPE_REALTIME) ? TRUE : FALSE;
 	}
-	
+
 	public function getScheduleType($config = array())
 	{
 		$schedule_type = FALSE;
@@ -382,23 +381,23 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$search = array('&l=1','l=1','%26l%3d1','#%21l=1','%23!l%3d1','#!l=1');
 		return str_replace($search,'',$url);
 	}
-	
+
 	/**
 	 * Api doSearch wrapper
-	 * 
+	 *
 	 * @param array $filters
 	 * @param array $facets
 	 * @param string $from
 	 * @param string $limit
 	 * @param array $sort
-	 * @return type 
+	 * @return type
 	 */
 	public function search($filters = array(), $facets = array(), $from = false, $limit = false, $sort = array())
 	{
 		$api = Mage::getModel('elasticsearch/api_elasticsearch');
 		// adding default filters
 		$defaultFilters = $this->getElasticsearchDefaultFilters();
-		
+
 		// adding customer session filters
 		$customerSessionFilters = $this->getElasticFilters();
 
@@ -411,14 +410,14 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		if ($limit === false) {
 			$limit = $this->getSearchQueryLimit();
 		}
-		$wildcard = $this->hasWildcard() ? '*' : ''; 
+		$wildcard = $this->hasWildcard() ? '*' : '';
 		return $api->doSearch($this->getEqueryText() . $wildcard, $filters, $facets, $from, $limit, $sort);
 	}
-	
+
 	/**
 	 * Returns elastic search default filters array
-	 * 
-	 * @return array 
+	 *
+	 * @return array
 	 */
 	public function getElasticsearchDefaultFilters()
 	{
@@ -427,36 +426,36 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$visibilityFilter = $this->getProductVisibilityFilter();
 		return array($storeFilter, $productStatusFilter, $visibilityFilter);
 	}
-	
+
 	/**
 	 * Returns store_id Elastic_Filter_Terms
-	 * 
-	 * @return \Elastica_Filter_Term 
+	 *
+	 * @return \Elastica_Filter_Term
 	 */
 	public function getElasticsearchStoreFilter()
 	{
 
 		return $this->getElasticaFilterTerm('store_id', $this->getStoreId());
 	}
-	
+
 	/**
 	 * Returns instance of ElasticaFilterTerm
-	 * 
+	 *
 	 * @param string $tag
 	 * @param string $term
-	 * @return \Elastica_Filter_Term 
+	 * @return \Elastica_Filter_Term
 	 */
 	public function getElasticaFilterTerm($tag, $term)
 	{
 		return new Elastica_Filter_Term(array($tag => $term));
 	}
-	
+
 	/**
 	 * Returns instance of Elastica_Filter_Terms
-	 * 
+	 *
 	 * @param string $tag
 	 * @param array $terms
-	 * @return \Elastica_Filter_Terms 
+	 * @return \Elastica_Filter_Terms
 	 */
 	public function getElasticaFilterTerms($tag, $terms = array())
 	{
@@ -464,7 +463,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$filter->setTerms($tag, $terms);
 		return $filter;
 	}
-	
+
 	public function getProductStatusFilter()
 	{
 		return $this->getElasticaFilterTerm('status', 'enabled');
@@ -472,16 +471,16 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 
 	/**
 	 * Returns Elastica product visibility filter
-	 * @return \Elastica_Filter_Or 
+	 * @return \Elastica_Filter_Or
 	 */
 	public function getProductVisibilityFilter()
 	{
 		/**
 		*@todo use visibilities from  product visibility model
 		*/
-		
+
 		//$visibilities = Mage::getSingleton('catalog/product_visibility')->getVisibleInSiteIds();
-		
+
 		$visibilityCatalog = $this->getElasticaFilterTerm('visibility', '2');
 		$visibilitySearch = $this->getElasticaFilterTerm('visibility', '3');
 		$visibilityCatalogSearch = $this->getElasticaFilterTerm('visibility', '4');
@@ -491,7 +490,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$orFilter->addFilter($visibilityCatalogSearch);
 		return $orFilter;
 	}
-	
+
 	/**
 	 * Retrieve search query text
 	 *
@@ -521,7 +520,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $this->_queryText;
 	}
-	
+
 	/**
 	 * Retrieve maximum query length
 	 *
@@ -532,7 +531,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		return Mage::getStoreConfig(Mage_CatalogSearch_Model_Query::XML_PATH_MAX_QUERY_LENGTH, $store);
 	}
-	
+
 	/**
 	 * Retrieve search query parameter name
 	 *
@@ -545,10 +544,10 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 
 	/**
 	 * Wrapper for getQueryText method
-	 * 
+	 *
 	 * Just here in case we'll need to extend its functionality in ES
-	 * 
-	 * @return type 
+	 *
+	 * @return type
 	 */
 	public function getEqueryText()
 	{

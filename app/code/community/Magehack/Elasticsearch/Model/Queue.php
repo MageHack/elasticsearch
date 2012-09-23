@@ -208,7 +208,7 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 		$items = $this->getProcessedItems($type);
 		foreach ($items as $item)
 		{
-			//$item->delete();
+			$item->delete();
 		}
 	}
 
@@ -220,7 +220,7 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	public function getProcessedItems($type = NULL) {
 		$items = $this->getItems()->addFieldToFilter('processed', 1);
 		if ($type) {
-			$items->addFilter('elasticsearch_etype.name', $type);
+			$items->addFilter('elasticsearch_etype.etype_id', $type);
 		}
 		return $items;
 	}

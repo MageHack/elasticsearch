@@ -70,6 +70,21 @@ class Magehack_Elasticsearch_Model_Indexer_Summary extends Mage_Index_Model_Inde
     }
 
     /**
+     * Register data required by CMS page save process
+     *
+     * @param Mage_Index_Model_Event $event
+     */
+    protected function _registerPageSaveEvent(Mage_Index_Model_Event $event)
+    {
+        /* @var $page Mage_Cms_Model_Page */
+        $page = $event->getDataObject();
+
+        if (!$page->isObjectNew()) {
+            $event->addNewData('elasticsearch_reindex_required', true);
+        }
+    }
+
+    /**
      * Register data required by catalog product delete process
      *
      * @param Mage_Index_Model_Event $event
@@ -77,6 +92,16 @@ class Magehack_Elasticsearch_Model_Indexer_Summary extends Mage_Index_Model_Inde
     protected function _registerCatalogProductDeleteEvent(Mage_Index_Model_Event $event)
     {
         $event->addNewData('elasticsearch_reindex_product_ids', $event->getEntityPk());
+    }
+
+    /**
+     * Register data required by CMS page delete process
+     *
+     * @param Mage_Index_Model_Event $event
+     */
+    protected function _registerPageDeleteEvent(Mage_Index_Model_Event $event)
+    {
+        $event->addNewData('elasticsearch_reindex_page_ids', $event->getEntityPk());
     }
 
     /**
@@ -113,6 +138,27 @@ class Magehack_Elasticsearch_Model_Indexer_Summary extends Mage_Index_Model_Inde
         }
     }
 
+    /**
+     * Register data required by CMS page massaction process
+     *
+     * @param Mage_Index_Model_Event $event
+     */
+    protected function _registerPageActionEvent(Mage_Index_Model_Event $event)
+    {
+        /* @var $actionObject Varien_Object */
+        $actionObject = $event->getDataObject();
+
+        // check changed websites
+        if ($actionObject->getWebsiteIds()) {
+            $reindexTags = true;
+        }
+
+        // register affected pages
+        if ($reindexTags) {
+            $event->addNewData('elasticsearch_reindex_page_ids', $actionObject->getEntityIds());
+        }
+    }
+
     protected function _registerCatalogProduct(Mage_Index_Model_Event $event)
     {
         switch ($event->getType()) {
@@ -126,6 +172,23 @@ class Magehack_Elasticsearch_Model_Indexer_Summary extends Mage_Index_Model_Inde
 
             case Mage_Index_Model_Event::TYPE_MASS_ACTION:
                 $this->_registerCatalogProductMassActionEvent($event);
+                break;
+        }
+    }
+
+    protected function _registerPage(Mage_Index_Model_Event $event)
+    {
+        switch ($event->getType()) {
+            case Mage_Index_Model_Event::TYPE_SAVE:
+                $this->_registerPageSaveEvent($event);
+                break;
+
+            case Mage_Index_Model_Event::TYPE_DELETE:
+                $this->_registerPageDeleteEvent($event);
+                break;
+
+            case Mage_Index_Model_Event::TYPE_MASS_ACTION:
+                $this->_registerPageMassActionEvent($event);
                 break;
         }
     }
