@@ -17,6 +17,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	const XML_PATH_EQUERY_FROMSIZESEARCH = 'global/elasticsearch/equery/fromsizesearch';
 	const CRON_JOB_CODE = 'elasticsearch';
 	const QUERY_VAR_NAME = 'q';
+	const LIMIT_VAR_NAME = 'limit';
 	const MAX_QUERY_LEN = 200;
 	const CONTROLLER_SEARCH_RESULT_ACTION = 'elasticsearch/result';
 
@@ -408,7 +409,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		$filters = array_merge($defaultFilters, $filters);
 
 		if ($limit === false) {
-			$limit = $this->getSearchQueryLimit();
+			$limit = ($this->getLimitParam() === 'all') ? 1000 : $this->getLimitParam();
 		}
 		$wildcard = $this->getConfigHasWildcard('globals') ? '*' : '';
 		return $api->doSearch($this->getEqueryText() . $wildcard, $filters, $facets, $from, $limit, $sort);
@@ -520,6 +521,10 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $this->_queryText;
 	}
+	
+	public function getLimitParam(){
+		return $this->_getRequest()->getParam($this->getLimitParamName());
+	}
 
 	/**
 	 * Retrieve maximum query length
@@ -540,6 +545,16 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	public function getQueryParamName()
 	{
 		return self::QUERY_VAR_NAME;
+	}
+	
+	/**
+	 * Retrieve limit query parameter name
+	 *
+	 * @return string
+	 */
+	public function getLimitParamName()
+	{
+		return self::LIMIT_VAR_NAME;
 	}
 
 	/**

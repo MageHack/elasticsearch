@@ -409,7 +409,7 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 	public function doSearch($query, $filters = array(), $facets = array(), $from = false, $limit = false, $sort = array())
 	{
 		$queryObject = false;
-
+		$limit = ($limit) ? $limit : Mage::getStoreConfig('catalog/frontend/grid_per_page', $this->_getHelper()->getStoreId());
 		if (count($filters) > 0) {
 			$andFilter = new Elastica_Filter_And();
 
