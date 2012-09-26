@@ -1,7 +1,12 @@
 <?php
 
-Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
-
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+Class Magehack_Elasticsearch_Model_Queue extends Varien_Object
+{
 	const LOCK_TIME = 3600;
 	const LOCK_DIR = 'var/locks';
 
@@ -10,7 +15,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 		'page' => 'cmspage'
 	);
 
-	protected function _construct() {
+	protected function _construct()
+	{
 		if (!file_exists($this->_getLockDir())) {
 			if (!mkdir($this->_getLockDir(), 0777, TRUE)) {
 				Mage::throwException("Could not create a lock directory: " . $this->_getLockDir());
@@ -22,7 +28,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 *
 	 * @return Magehack_Elasticsearch_Helper_Data
 	 */
-	protected function _getHelper() {
+	protected function _getHelper()
+	{
 		if (!isset($this->_helper)) {
 			$this->_helper = Mage::helper('elasticsearch');
 		}
@@ -36,7 +43,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 * @param string $message
 	 * @return bool
 	 */
-	public function addItem(Varien_Object $model, $message = NULL, $type = NULL) {
+	public function addItem(Varien_Object $model, $message = NULL, $type = NULL)
+	{
 		$result = FALSE;
 
 		// Determine the message if not provided
@@ -86,7 +94,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 * @param string $model_class
 	 * @return string
 	 */
-	protected function _guessModelType($model_class) {
+	protected function _guessModelType($model_class)
+	{
 		$return_type = 'unknown';
 
 		foreach ($this->modelTypes as $class_frag => $type) {
@@ -106,7 +115,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 *
 	 * @return bool
 	 */
-	public function addAllSupportedProducts() {
+	public function addAllSupportedProducts()
+	{
 		$result = TRUE;
 
 		$visibilities = Mage::getSingleton('catalog/product_visibility')->getVisibleInSiteIds();
@@ -126,7 +136,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 		return $result;
 	}
 
-	public function addAllItems(Varien_Data_Collection $collection){
+	public function addAllItems(Varien_Data_Collection $collection)
+	{
 		$result = TRUE;
 		foreach ($collection as $item) {
 			$added = $this->addItem($item, Magehack_Elasticsearch_Model_Queue_Item::MESSAGE_CHANGED);
@@ -146,7 +157,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 * @param Mage_Catalog_Model_Product $product
 	 * @return string
 	 */
-	protected function _getMessageForModel(Varien_Object $item) {
+	protected function _getMessageForModel(Varien_Object $item)
+	{
 		$changed = TRUE;
 
 		// Status
@@ -181,7 +193,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 * @param Mage_Catalog_Model_Product $product
 	 * @return boolean
 	 */
-	protected function _validateItem(Mage_Catalog_Model_Product $product) {
+	protected function _validateItem(Mage_Catalog_Model_Product $product)
+	{
 		$valid = TRUE;
 
 		// Only allow supported product types
@@ -197,14 +210,16 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 *
 	 * @return Magehack_Elasticsearch_Model_Mysql4_Queue_Item_Collection
 	 */
-	public function getItems() {
+	public function getItems()
+	{
 		return Mage::getModel('elasticsearch/queue_item')->getCollection();
 	}
 
 	/**
 	 * Delete queue items marked as processed
 	 */
-	public function deleteProcessedItems($type = NULL) {
+	public function deleteProcessedItems($type = NULL)
+	{
 		$items = $this->getProcessedItems($type);
 		foreach ($items as $item)
 		{
@@ -217,7 +232,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 *
 	 * @return type
 	 */
-	public function getProcessedItems($type = NULL) {
+	public function getProcessedItems($type = NULL)
+	{
 		$items = $this->getItems()->addFieldToFilter('processed', 1);
 		if ($type) {
 			$items->addFilter('elasticsearch_etype.etype_id', $type);
@@ -230,7 +246,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 *
 	 * @return type
 	 */
-	public function getUnprocessedItems($type = NULL) {
+	public function getUnprocessedItems($type = NULL)
+	{
 		$items = $this->getItems()->addFieldToFilter('processed', 0);
 		if ($type) {
 			$items->addFilter('elasticsearch_etype.name', $type);
@@ -242,7 +259,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 * Checks to see if queue is locked
 	 * @return boolean
 	 */
-	public function isLocked() {
+	public function isLocked()
+	{
 		return file_exists($this->_getLockFilePath());
 	}
 
@@ -250,7 +268,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 * Lock queue to prevent more than one handler running
 	 * @return boolean
 	 */
-	public function lock() {
+	public function lock()
+	{
 		if (!file_exists($this->_getLockFilePath())) {
 			Mage::helper('elasticsearch')->log(get_class($this) . '::lock() Locking the queue');
 			return touch($this->_getLockFilePath());
@@ -274,7 +293,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 * Unlock queue
 	 * @return boolean
 	 */
-	public function unlock() {
+	public function unlock()
+	{
 //        Mage::helper('elasticsearch')->log(get_class($this) . '::unlock() Unlocking the queue');
 		return @unlink($this->_getLockFilePath());
 	}
@@ -284,7 +304,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 *
 	 * @return type
 	 */
-	protected function _getLockDir() {
+	protected function _getLockDir()
+	{
 		return Mage::getBaseDir() . '/' . self::LOCK_DIR;
 	}
 
@@ -293,8 +314,8 @@ Class Magehack_Elasticsearch_Model_Queue extends Varien_Object {
 	 *
 	 * @return type
 	 */
-	protected function _getLockFilePath() {
+	protected function _getLockFilePath()
+	{
 		return $this->_getLockDir() . '/elasticsearch_queue.lock';
 	}
-
 }

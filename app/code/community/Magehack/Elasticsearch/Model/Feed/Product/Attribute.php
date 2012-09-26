@@ -1,7 +1,12 @@
 <?php
 
-Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
-
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class Magehack_Elasticsearch_Model_Feed_Product_Attribute
+{
 	const ATTRIBUTE_TYPE_FRONTEND = 'frontend';
 	const ATTRIBUTE_TYPE_BACKEND = 'backend';
 	const DATA_ARRAY_BACKEND = '_backend';
@@ -99,9 +104,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		)
 	);
 
-
-	function __construct(Mage_Catalog_Model_Resource_Eav_Attribute $attribute) {
-
+	function __construct(Mage_Catalog_Model_Resource_Eav_Attribute $attribute)
+	{
 		$this->_attribute = $attribute;
 
 		$searchable = ($attribute->getData('is_searchable')) ? 1 : 0;
@@ -135,7 +139,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		}
 	}
 
-	protected function _getHelper(){
+	protected function _getHelper()
+	{
 		if(!isset($this->_helper)){
 			$this->_helper = Mage::helper('elasticsearch');
 		}
@@ -143,19 +148,23 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return $this->_helper;
 	}
 
-	public function getType(){
+	public function getType()
+	{
 		return $this->_elasticFrontType;
 	}
 
-	public function setProduct(Mage_Catalog_Model_Product $product){
+	public function setProduct(Mage_Catalog_Model_Product $product)
+	{
 		$this->_product = $product;
 	}
 
-	public function getProduct(){
+	public function getProduct()
+	{
 		return $this->_product;
 	}
 
-	protected function _getId () {
+	protected function _getId()
+	{
 		$id = $this->_attribute->getId();
 		if (isset ($id)) {
 			return $id;
@@ -163,27 +172,33 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return FALSE;
 	}
 
-	protected function _elasticMapType(){
+	protected function _elasticMapType()
+	{
 		return $this->_getAttributeMapValue('_getType');
 	}
 
-	protected function _isSearchable(){
+	protected function _isSearchable()
+	{
 		return (isset($this->_searchTypes['searchable'])) ? $this->_searchTypes['searchable'] : FALSE;
 	}
 
-	protected function _isFilterable(){
+	protected function _isFilterable()
+	{
 		return (isset($this->_searchTypes['filterable'])) ? $this->_searchTypes['filterable'] : FALSE;
 	}
 
-	protected function _isAutoSuggestable(){
+	protected function _isAutoSuggestable()
+	{
 		return (isset($this->_searchTypes['autosuggest'])) ? $this->_searchTypes['autosuggest'] : FALSE;
 	}
 
-	protected function _isSortable(){
+	protected function _isSortable()
+	{
 		return (isset($this->_searchTypes['sorted'])) ? $this->_searchTypes['sorted'] : FALSE;
 	}
 
-	protected function _isMultiField(){
+	protected function _isMultiField()
+	{
 		$this->_isMulti = FALSE;
 
 		$attribute_can_multi = $this->_getAttributeMapValue('_canMulti');
@@ -194,7 +209,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return $this->_isMulti;
 	}
 
-	protected function _getTextAreaValue($type){
+	protected function _getTextAreaValue($type)
+	{
 		if($value = $this->_attribute->getFrontend()->getValue($this->getProduct())){
 			return strip_tags($value);
 		}
@@ -202,7 +218,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return NULL;
 	}
 
-	protected function _getSelectValue($type){
+	protected function _getSelectValue($type)
+	{
 		if($type == self::ATTRIBUTE_TYPE_FRONTEND && $value = $this->_attribute->getFrontend()->getValue($this->getProduct())){
 			return trim($value);
 		}
@@ -221,7 +238,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return NULL;
 	}
 
-	protected function _getMultiSelectValue($type){
+	protected function _getMultiSelectValue($type)
+	{
 		if($type == self::ATTRIBUTE_TYPE_FRONTEND && $value = $this->_attribute->getFrontend()->getValue($this->getProduct())){
 			// Convert value to array, trim and dedupe
 			$val = array_unique(array_map('trim', explode(',', $value)));
@@ -247,7 +265,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return NULL;
 	}
 
-	public function getFrontendValue(){
+	public function getFrontendValue()
+	{
 		$method = $this->_getAttributeMapValue('_getValue');
 
 		if($method !== FALSE){
@@ -267,8 +286,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return NULL;
 	}
 
-
-	public function getBackendValue(){
+	public function getBackendValue()
+	{
 		$method = $this->_getAttributeMapValue('_getValue');
 		$aId = $this->_getId();
 		if($method !== FALSE){
@@ -280,13 +299,14 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 			/**
 			 *@todo We'll need to be able to determine boolean types. At the mo, getting only frontend values
 			 */
-			return $this->_attribute->getFrontend()->getValue($this->getProduct());	
+			return $this->_attribute->getFrontend()->getValue($this->getProduct());
 		}
-		
+
 		return NULL;
 	}
 
-	public function toCreateMap(&$parent_array){
+	public function toCreateMap(&$parent_array)
+	{
 		$parent_array[$this->_name] = $this->getFrontendValue();
 		$parent_array[$this->_name . self::DATA_ARRAY_BACKEND] = $this->getBackendValue();
 		return $parent_array;
@@ -301,8 +321,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 	 * @param array &$parent_array
 	 * @return array
 	 */
-	public function toTypeMap(&$parent_array){
-
+	public function toTypeMap(&$parent_array)
+	{
 		$data = array(
 			"type" => ($this->_isMultiField()) ? "multi_field" : $this->_elasticFrontType
 		);
@@ -383,7 +403,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return $parent_array;
 	}
 
-	protected function _processCustomMapping($data){
+	protected function _processCustomMapping($data)
+	{
 		foreach($this->_customMap as $name => $options){
 			// Remove field if name is pre-fixed with '-'
 			if($string = $this->_getHelper()->stringCheckForUnset($name)){
@@ -418,7 +439,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return $data;
 	}
 
-	protected function _getAttributeMapValue($option){
+	protected function _getAttributeMapValue($option)
+	{
 		$backend_type = $this->_magBackType;
 		$frontend_type = $this->_magFrontType;
 
@@ -439,7 +461,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return $value;
 	}
 
-	protected function _getAttributeMapOverrides(){
+	protected function _getAttributeMapOverrides()
+	{
 		if(!isset($this->_attributeMapOverrides)){
 			$this->_attributeMapOverrides = Mage::registry("elasticsearch_feed_product_attr_overrides");
 		}
@@ -447,8 +470,8 @@ Class Magehack_Elasticsearch_Model_Feed_Product_Attribute{
 		return $this->_attributeMapOverrides;
 	}
 
-
-	public function isIndexable($attribute){
+	public function isIndexable($attribute)
+	{
 		$overrides = $this->_getAttributeMapOverrides();
 		if(isset($overrides[$this->_name]['_ignore'])){
 			return $overrides[$this->_name]['_ignore'];

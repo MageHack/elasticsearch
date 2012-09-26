@@ -1,8 +1,9 @@
 <?php
+
 /**
- * @category    MageHack
- * @package     MageHack_Elasticsearch
- * @author      MageHack Elasticsearch Team <git@magehack.com>
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Magehack_Elasticsearch_Model_Indexer_Summary extends Mage_Index_Model_Indexer_Abstract
 {

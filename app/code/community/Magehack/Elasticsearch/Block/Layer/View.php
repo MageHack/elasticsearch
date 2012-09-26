@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Magehack_Elasticsearch_Block_Layer_View  extends Mage_Catalog_Block_Layer_View
 {
-	
 	/**
      * Internal constructor
      */
@@ -15,9 +19,9 @@ class Magehack_Elasticsearch_Block_Layer_View  extends Mage_Catalog_Block_Layer_
 
     /**
      * Initialize blocks names
-	 * 
+	 *
 	 * @todo override also other blocks to encapsulate in elasticsearch
-	 * 
+	 *
      */
     protected function _initBlocks()
     {

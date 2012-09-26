@@ -1,17 +1,13 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of Elasticsearch
- *
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author adrian
  */
-class Magehack_Elasticsearch_Block_Attribute_Edit_Tab_Elasticsearch extends Mage_Adminhtml_Block_Widget_Form{
-	
+class Magehack_Elasticsearch_Block_Attribute_Edit_Tab_Elasticsearch extends Mage_Adminhtml_Block_Widget_Form
+{
     protected $_attribute = null;
 
     public function setAttributeObject($attribute)
@@ -27,14 +23,14 @@ class Magehack_Elasticsearch_Block_Attribute_Edit_Tab_Elasticsearch extends Mage
         }
         return $this->_attribute;
     }
-	
+
 	/**
      * Adding product form elements for editing attribute
      *
      * @return Mage_Adminhtml_Block_Catalog_Product_Attribute_Edit_Tab_Main
      */
-    protected function _prepareForm(){
-		
+    protected function _prepareForm()
+		{
         $form = new Varien_Data_Form(array(
             'id' => 'edit_form',
             'action' => $this->getData('action'),
@@ -50,7 +46,7 @@ class Magehack_Elasticsearch_Block_Attribute_Edit_Tab_Elasticsearch extends Mage
             'title'    => Mage::helper('catalog')->__('Boost Value (used per query)'),
 			'class' => 'validate-number',
         ));
-		
+
         $fieldset->addField('elasticsearch_custom_map', 'textarea', array(
             'name'     => 'elasticsearch_custom_map',
             'label'    => Mage::helper('catalog')->__('Custom Mapping Options'),
@@ -63,15 +59,16 @@ class Magehack_Elasticsearch_Block_Attribute_Edit_Tab_Elasticsearch extends Mage
 
         return parent::_prepareForm();
 	}
-	
+
     /**
      * This method is called before rendering HTML
      *
      * @return Mage_Eav_Block_Adminhtml_Attribute_Edit_Main_Abstract
      */
-    protected function _beforeToHtml() {
+    protected function _beforeToHtml()
+		{
         parent::_beforeToHtml();
-		
+
         $attributeObject = $this->getAttributeObject();
         if ($attributeObject->getId()) {
             $form = $this->getForm();
@@ -88,13 +85,14 @@ class Magehack_Elasticsearch_Block_Attribute_Edit_Tab_Elasticsearch extends Mage
         }
         return $this;
     }
-	
+
     /**
      * Initialize form fileds values
      *
      * @return Mage_Eav_Block_Adminhtml_Attribute_Edit_Main_Abstract
      */
-    protected function _initFormValues() {
+    protected function _initFormValues()
+		{
         //Mage::dispatchEvent('adminhtml_block_eav_attribute_edit_form_init', array('form' => $this->getForm()));
         $this->getForm()
             ->addValues($this->getAttributeObject()->getData());
@@ -108,7 +106,8 @@ class Magehack_Elasticsearch_Block_Attribute_Edit_Tab_Elasticsearch extends Mage
      * @param   string $html
      * @return  string
      */
-    protected function _afterToHtml($html) {
+    protected function _afterToHtml($html)
+		{
         $jsScripts = $this->getLayout()
             ->createBlock('eav/adminhtml_attribute_edit_js')->toHtml();
         return $html.$jsScripts;

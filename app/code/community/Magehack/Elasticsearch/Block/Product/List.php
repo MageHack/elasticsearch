@@ -1,24 +1,14 @@
-
 <?php
-/**
- *
- * @category    Mage
- * @package     Mage_CatalogSearch
- * @copyright   Copyright (c) 2011 Magento Inc. (http://www.magentocommerce.com)
- * @license     http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
- */
-
 
 /**
  * Product search result block
  *
- * @category   Mage
- * @package    Mage_CatalogSearch
- * @module     Catalog
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Magehack_Elasticsearch_Block_Product_List extends Mage_Catalog_Block_Product_List
 {
-	
 	/**
      * Retrieve loaded category collection
      *
@@ -28,8 +18,7 @@ class Magehack_Elasticsearch_Block_Product_List extends Mage_Catalog_Block_Produ
     {
         return $this->_getProductCollection();
     }
-	
-	
+
 	/**
      * Get catalog layer model
      *
@@ -39,8 +28,6 @@ class Magehack_Elasticsearch_Block_Product_List extends Mage_Catalog_Block_Produ
     {
         return Mage::getSingleton('elasticsearch/layer');
     }
-	
-
 	
 	/**
      * Retrieve loaded category collection
@@ -53,14 +40,14 @@ class Magehack_Elasticsearch_Block_Product_List extends Mage_Catalog_Block_Produ
 		if (is_null($this->_productCollection)) {
             $layer = $this->getLayer();
             /* @var $layer Mage_Catalog_Model_Layer */
-			
+
             if ($this->getShowRootCategory()) {
                 $this->setCategoryId(Mage::app()->getStore()->getRootCategoryId());
             }
 
             // if this is a product view page
             if (Mage::registry('product')) {
-				
+
                 // get collection of categories this product is associated with
                 $categories = Mage::registry('product')->getCategoryCollection()
                     ->setPage(1, 1)
@@ -88,8 +75,8 @@ class Magehack_Elasticsearch_Block_Product_List extends Mage_Catalog_Block_Produ
         }
         return $this->_productCollection;
     }
-	
-	
+
+
 	/**
      * Need use as _prepareLayout - but problem in declaring collection from
      * another block (was problem with search result)
@@ -125,5 +112,5 @@ class Magehack_Elasticsearch_Block_Product_List extends Mage_Catalog_Block_Produ
 
         return $this;
     }
-	
+
 }

@@ -1,17 +1,20 @@
 <?php
+
 /**
- *
- * @category    Magehack 
- * @package     Magehack_Elasticsearch
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author      Carlo Tasca <dev@gpmd.net>
  */
-class Magehack_Elasticsearch_Model_Events_Observer {
+class Magehack_Elasticsearch_Model_Events_Observer
+{
 	/**
 	 * Inject 'Use in Autosuggest' field to add/edit attribute form
 	 *
 	 * @param Varien_Event_Observer $observer
 	 */
-	public function adminAttributeEdit(Varien_Event_Observer $observer){
+	public function adminAttributeEdit(Varien_Event_Observer $observer)
+	{
 		$form = $observer->getEvent()->getForm();
 		if($form){
 			$fieldset = $form->getElement('front_fieldset');
@@ -24,36 +27,39 @@ class Magehack_Elasticsearch_Model_Events_Observer {
 			));
 		}
 	}
-	
+
 	/**
 	 *
-	 * @return Magehack_Elasticsearch_Model_Api_Elasticsearch 
+	 * @return Magehack_Elasticsearch_Model_Api_Elasticsearch
 	 */
-	protected function _getElasticsearchApi(){
+	protected function _getElasticsearchApi()
+	{
 		if(!isset($this->_elasticsearch)){
 			$this->_elasticsearch = Mage::getModel('elasticsearch/api_elasticsearch');
 		}
-		
+
 		return $this->_elasticsearch;
 	}
-	
+
 	/**
 	 *
 	 * @return Magehack_Elasticsearch_Helper_Data
 	 */
-	protected function _getHelper(){
+	protected function _getHelper()
+	{
 		if(!isset($this->_helper)){
 			$this->_helper = Mage::helper('elasticsearch');
 		}
 		return $this->_helper;
 	}
-	
+
 	/**
 	 * Adds deleted products to the feed update queue
-	 * 
-	 * @param Varien_Event_Observer $observer 
+	 *
+	 * @param Varien_Event_Observer $observer
 	 */
-	public function catalogProductDeleteBefore(Varien_Event_Observer $observer) {
+	public function catalogProductDeleteBefore(Varien_Event_Observer $observer)
+	{
 		$product = $observer->getEvent()->getProduct();
 
 		$message = Magehack_Elasticsearch_Model_Queue_Item::MESSAGE_UNPUBLISHED;
@@ -64,22 +70,23 @@ class Magehack_Elasticsearch_Model_Events_Observer {
 //			Mage::getModel('elasticsearch/feed_product')->generateAndPush();
 //		}
 	}
-	
+
 	/**
 	 * Adds products to the feed update queue on stock item save
-	 * 
-	 * @param Varien_Event_Observer $observer 
+	 *
+	 * @param Varien_Event_Observer $observer
 	 */
-	public function catalogInventoryStockItemSaveAfter(Varien_Event_Observer $observer) {
+	public function catalogInventoryStockItemSaveAfter(Varien_Event_Observer $observer)
+	{
 		$stockItem = $observer->getEvent()->getItem();
-		
+
         $trigger_fields = array(
             'product_id',
             'qty',
             'is_in_stock',
             'stock_id',
         );
-		
+
 		if($this->_getHelper()->hasChanged($stockItem, $trigger_fields)){
 			$product = Mage::getModel('catalog/product')->load($stockItem->getProductId());
 			$queue = Mage::getModel('elasticsearch/queue');
@@ -98,24 +105,26 @@ class Magehack_Elasticsearch_Model_Events_Observer {
 //			}
 		}
 	}
-	
+
 	/**
 	 * Updates the Elasticsearch Schema after an attribute is deleted
-	 * 
-	 * @param Varien_Event_Observer $observer 
+	 *
+	 * @param Varien_Event_Observer $observer
 	 */
-	public function catalogEntityAttributeDeleteAfter(Varien_Event_Observer $observer) {
+	public function catalogEntityAttributeDeleteAfter(Varien_Event_Observer $observer)
+	{
 		$this->catalogEntityAttributeSaveBefore($observer);
 
 		return $this;
 	}
-	
+
 	/**
 	 * Queue product if any of its attrbitue trigger fields are changed
-	 * 
-	 * @param Varien_Event_Observer $observer 
+	 *
+	 * @param Varien_Event_Observer $observer
 	 */
-	public function catalogEntityAttributeSaveBefore(Varien_Event_Observer $observer) {
+	public function catalogEntityAttributeSaveBefore(Varien_Event_Observer $observer)
+	{
 		$attribute = $observer->getEvent()->getAttribute();
 
         $trigger_fields = array(
@@ -131,14 +140,14 @@ class Magehack_Elasticsearch_Model_Events_Observer {
 			'backend_type',
 			'frontend_input'
         );
-		
+
 		if($this->_getHelper()->hasChanged($attribute, $trigger_fields)){
 			$feed_product = Mage::getModel('elasticsearch/feed_product');
 			$this->_getElasticsearchApi()->recreateType($feed_product);
-			
+
 			$queue = Mage::getModel('elasticsearch/queue');
 			$queue->addAllSupportedProducts();
-			
+
 			if($this->_getHelper()->isRealtime()){
 				Mage::getModel('elasticsearch/feed_product')->generateAndPush();
 			}
@@ -150,7 +159,8 @@ class Magehack_Elasticsearch_Model_Events_Observer {
 	 *
 	 * @param Varien_Event_Observer $observer
 	 */
-	public function reindex(Varien_Event_Observer $observer){
+	public function reindex(Varien_Event_Observer $observer)
+	{
 		$helper = Mage::helper('elasticsearch')->remapReindexAll();
 	}
 }

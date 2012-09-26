@@ -1,8 +1,12 @@
 <?php
 
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Magehack_Elasticsearch_Block_Page_Html_Pager extends Mage_Page_Block_Html_Pager
 {
-	
 	protected function _construct()
     {
         parent::_construct();
@@ -10,7 +14,7 @@ class Magehack_Elasticsearch_Block_Page_Html_Pager extends Mage_Page_Block_Html_
         $this->setData('use_container', true);
         $this->setTemplate('elasticsearch/page/html/pager.phtml');
     }
-	
+
 	public function setCollection($collection)
     {
 		$this->_collection = $collection
@@ -24,7 +28,6 @@ class Magehack_Elasticsearch_Block_Page_Html_Pager extends Mage_Page_Block_Html_
 
         return $this;
     }
-	
 	
 	public function getPages()
     {

@@ -1,7 +1,12 @@
 <?php
 
-Class Magehack_Elasticsearch_Model_Feed_Cmspage extends Magehack_Elasticsearch_Model_Feed_Abstract {
-
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
+class Magehack_Elasticsearch_Model_Feed_Cmspage extends Magehack_Elasticsearch_Model_Feed_Abstract
+{
 	protected $_type = 'cmspage';
 
     /**
@@ -14,7 +19,8 @@ Class Magehack_Elasticsearch_Model_Feed_Cmspage extends Magehack_Elasticsearch_M
 	/**
 	 * Returns queue items for this feed to process
 	 */
-	protected function _getQueueItems(){
+	protected function _getQueueItems()
+	{
         $items =  Mage::getModel('elasticsearch/queue')->getUnprocessedItems('cmspage');
         return $items;
 	}
@@ -23,7 +29,8 @@ Class Magehack_Elasticsearch_Model_Feed_Cmspage extends Magehack_Elasticsearch_M
 	 * Sets $this->_feedArray to a assoc array key'd on ID
 	 *
 	 */
-	protected function _organiseData($items){
+	protected function _organiseData($items)
+	{
 		$this->_feedArray = array();
 
 		foreach($items as $item){
@@ -50,7 +57,8 @@ Class Magehack_Elasticsearch_Model_Feed_Cmspage extends Magehack_Elasticsearch_M
 		Mage::dispatchEvent($this->_eventPrefix.'_organise_data', array("feed_cmspage" => $this, "feed_array" => $this->_feedArray));
 	}
 
-	protected function _prepareCmspageData($item){
+	protected function _prepareCmspageData($item)
+	{
 		$data = array();
 		$page = $item->getModel();
 
@@ -68,7 +76,8 @@ Class Magehack_Elasticsearch_Model_Feed_Cmspage extends Magehack_Elasticsearch_M
 	/**
 	 * Returns array for type mapping
 	 */
-	public function getMapping(){
+	public function getMapping()
+	{
 		$props = array();
 
 		Mage::dispatchEvent($this->_eventPrefix.'_generate_default_map_before', array("feed_cmspage" => $this, "data" => $props));
@@ -95,7 +104,8 @@ Class Magehack_Elasticsearch_Model_Feed_Cmspage extends Magehack_Elasticsearch_M
 		return $props;
 	}
 
-	public function getAllItems(){
+	public function getAllItems()
+	{
 		$pages = Mage::getModel('cms/page')->getCollection()
 				->addFieldToFilter('is_active', Mage_Cms_Model_Page::STATUS_ENABLED)
 				->addFieldToFilter('identifier', array('neq' => Mage_Cms_Model_Page::NOROUTE_PAGE_ID));

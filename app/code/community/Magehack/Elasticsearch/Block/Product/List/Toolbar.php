@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Magehack_Elasticsearch_Block_Product_List_Toolbar extends Mage_Catalog_Block_Product_List_Toolbar
 {
 	/**
@@ -11,8 +16,8 @@ class Magehack_Elasticsearch_Block_Product_List_Toolbar extends Mage_Catalog_Blo
         parent::_construct();
         $this->setTemplate('elasticsearch/product/list/toolbar.phtml');
     }
-	
-	
+
+
 	/**
      * Set collection to pager
      *
@@ -36,8 +41,8 @@ class Magehack_Elasticsearch_Block_Product_List_Toolbar extends Mage_Catalog_Blo
         }
         return $this;
     }
-	
-	
+
+
 	/**
      * Return products collection instance
      *
@@ -47,53 +52,53 @@ class Magehack_Elasticsearch_Block_Product_List_Toolbar extends Mage_Catalog_Blo
     {
         return $this->_collection;
     }
-	
+
 	/**
-	 * Return pager block 
-	 * @return Mage_Core_Block_Abstract 
+	 * Return pager block
+	 * @return Mage_Core_Block_Abstract
 	 */
-	public function getPager () 
+	public function getPager ()
 	{
 		return $this->getChild('product_list_toolbar_pager');
 	}
-	
+
 	/**
 	 * Return the size of loaded collection
-	 * @return int 
+	 * @return int
 	 */
-	
 	public function getTotalNum()
     {
 		return $this->getCollection()->getSize();
     }
-	
+
 	/**
 	 * Gets last pagination number
-	 * @return type 
+	 * @return type
 	 */
 	public function getLastNum()
     {
 		$collection = $this->getCollection();
         return $collection->getPageSize()*($collection->getCurPage()-1)+$collection->count();
     }
+
 	/**
 	 * Gets pagination first number
-	 * @return int 
+	 * @return int
 	 */
 	public function getFirstNum()
     {
         return $this->getLimit()*($this->getCurrentPage()-1)+1;
     }
-	
+
 	/**
 	 * Gets pagination last page number
-	 * @return type 
+	 * @return type
 	 */
 	public function getLastPageNum()
     {
         return $this->getCollection()->getLastPageNumber();
     }
-	
+
 	/**
      * Render pagination HTML
      *
@@ -101,7 +106,7 @@ class Magehack_Elasticsearch_Block_Product_List_Toolbar extends Mage_Catalog_Blo
      */
     public function getPagerHtml()
     {
-        
+
 		$pagerBlock = $this->getChild('product_list_toolbar_pager');
 
         if ($pagerBlock instanceof Varien_Object) {
@@ -123,5 +128,4 @@ class Magehack_Elasticsearch_Block_Product_List_Toolbar extends Mage_Catalog_Blo
 
         return '';
     }
-
 }

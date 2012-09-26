@@ -3,8 +3,9 @@
 /**
  * Catalog layer category filter
  *
- * @category    Magehack
- * @package     Magehack_Elasticsearch
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author      Carlo Tasca
  */
 class Magehack_Elasticsearch_Model_Feed_Product extends Magehack_Elasticsearch_Model_Feed_Abstract

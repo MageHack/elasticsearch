@@ -1,17 +1,15 @@
 <?php
 
 /**
- * @deprecated
- */
-
-/**
- * Description of Json
- *
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author adrian
  */
-class Magehack_Elasticsearch_Model_Config_Json extends Mage_Core_Model_Config_Data {
-
-	protected function _afterSave() {
+class Magehack_Elasticsearch_Model_Config_Json extends Mage_Core_Model_Config_Data
+{
+	protected function _afterSave()
+	{
 		if($this->getValue() && json_decode($this->getValue()) === NULL){
 			$error = NULL;
 			if (strnatcmp(phpversion(),'5.3.0') >= 0){
@@ -44,4 +42,3 @@ class Magehack_Elasticsearch_Model_Config_Json extends Mage_Core_Model_Config_Da
 		parent::_afterSave();
 	}
 }
-

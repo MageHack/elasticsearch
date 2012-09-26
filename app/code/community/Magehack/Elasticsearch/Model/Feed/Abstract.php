@@ -2,9 +2,13 @@
 
 /**
  * Abstract class describing a Feed based on the Queue
+ *
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
-
+abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object
+{
 	// Array of items and data to be indexed / updated
 	protected $_feedArray = array();
 
@@ -26,8 +30,8 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	protected $_eMap;
 	/* @var $_eMap Elastica_Type_Mapping */
 
-	function __construct() {
-
+	function __construct()
+	{
 		$this->_eClient = $this->_getElasticsearchApi()->getElasticaClient();
 
 		$this->_eIndex = $this->_getElasticsearchApi()->getElasticaIndex();
@@ -68,7 +72,8 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	 *
 	 * @return Magehack_Elasticsearch_Model_Api_Elasticsearch
 	 */
-	protected function _getElasticsearchApi(){
+	protected function _getElasticsearchApi()
+	{
 		if(!isset($this->_elasticsearch)){
 			$this->_elasticsearch = Mage::getModel('elasticsearch/api_elasticsearch');
 		}
@@ -77,10 +82,10 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	}
 
 	/**
-	 *
 	 * @return Magehack_Elasticsearch_Helper_Data
 	 */
-	protected function _getHelper(){
+	protected function _getHelper()
+	{
 		if(!isset($this->_helper)){
 			$this->_helper = Mage::helper('elasticsearch');
 		}
@@ -89,64 +94,70 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	}
 
 	/**
-	 *
 	 * @return Elastica_Client
 	 */
-	public function getClient(){
+	public function getClient()
+	{
 		return $this->_eClient;
 	}
 
 	/**
-	 *
 	 * @return Elastica_Index
 	 */
-	public function getIndex(){
+	public function getIndex()
+	{
 		return $this->_eIndex;
 	}
 
 	/**
-	 *
 	 * @return Elastica_Type
 	 */
-	public function getType(){
+	public function getType()
+	{
 		return $this->_eType;
 	}
 
 	/**
-	 *
 	 * @return Elastica_Type_Mapping
 	 */
-	public function getMap(){
+	public function getMap()
+	{
 		if(!isset($this->_eMap)){
 			$this->_eMap = new Elastica_Type_Mapping($this->getType());
 		}
 		return $this->_eMap;
 	}
 
-	public function getTypeName(){
+	public function getTypeName()
+	{
 		return $this->_type;
 	}
 
-	protected function _addSkipped($id){
+	protected function _addSkipped($id)
+	{
 		$this->_skipped[] = $id;
 	}
 
-	public function getIndexName(){
+	public function getIndexName()
+	{
 		return $this->getIndex()->getName();
 	}
 
-	public function setChunkSize($size){
+	public function setChunkSize($size)
+	{
 		$this->_chunkSize = (int) $size;
 	}
 
-	public function getChunkSize(){
+	public function getChunkSize()
+	{
 		return $this->_chunkSize;
 	}
 
 	/**
 	 * Main method, called from Cron according to admin-set schedule
 	 */
-	public function generateAndPush() {
+	public function generateAndPush()
+	{
 		try {
 			if ($this->generate()) {
 				$this->push();
@@ -170,7 +181,8 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	 *
 	 * @return boolean
 	 */
-	public function generate() {
+	public function generate()
+	{
 		$startTime = microtime(TRUE);
 		$queue = Mage::getModel('elasticsearch/queue');
 		$result = FALSE;
@@ -199,7 +211,8 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	/**
 	 * Push changes
 	 */
-	public function push() {
+	public function push()
+	{
 		$this->_feedArray = array_chunk($this->_feedArray, $this->_chunkSize);
 
 		foreach($this->_feedArray as $chunk => $data){
@@ -221,7 +234,8 @@ abstract class Magehack_Elasticsearch_Model_Feed_Abstract extends Varien_Object{
 	 * @param array $array
 	 * @return string | int
 	 */
-	protected function _endKey($array){
+	protected function _endKey($array)
+	{
 		return key(end($array));
 	}
 

@@ -1,4 +1,10 @@
 <?php
+
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Magehack_Elasticsearch_Block_Layer_State extends Mage_Catalog_Block_Layer_State
 {
 
@@ -20,7 +26,7 @@ class Magehack_Elasticsearch_Block_Layer_State extends Mage_Catalog_Block_Layer_
 	public function getActiveFilters()
 	{
 		$filters = $this->getLayer()->getState()->getFilters();
-		
+
 		if (!is_array($filters)) {
 			$filters = array();
 		}
@@ -41,7 +47,7 @@ class Magehack_Elasticsearch_Block_Layer_State extends Mage_Catalog_Block_Layer_
 	}
 
 	/**
-	 * Unsets session elasticsearch filters 
+	 * Unsets session elasticsearch filters
 	 */
 	protected function _unsElasticFilters()
 	{

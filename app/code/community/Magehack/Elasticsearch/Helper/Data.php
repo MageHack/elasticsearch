@@ -1,5 +1,10 @@
 <?php
 
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 {
 	const XML_PATH_GLOBAL_ENABLED = 'elasticsearch/globals/enabled';
@@ -29,7 +34,6 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	 * @var Magehack_Elasticsearch_Helper_Inflector
 	 */
 	protected $_inflector;
-
 
 	public function __construct()
 	{
@@ -92,7 +96,6 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		return Mage::helper('elasticsearch/inflector');
 	}
 
-
 	/**
 	 * Logging helper
 	 *
@@ -103,8 +106,6 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	{
 		Mage::log($message, $level, 'magehack_elasticsearch.log');
 	}
-
-
 
 	/**
 	 *  Gets store config value for node and key passed as argument.
@@ -132,6 +133,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		}
 		return $this->_storeId = Mage::app()->getStore()->getId();
 	}
+
 	/**
 	 * Returns customer session singleton
 	 * @return type
@@ -369,16 +371,16 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		return false;
 	}
 
-
-	public function addLnav($url){
+	public function addLnav($url)
+	{
 		if(strpos($url, 'l=0')===false&&strpos($url, 'l=1'===false)){
 			$url .= '&l=0';
 		}
 		return $url;
 	}
 
-
-	public function addLnav1($url){
+	public function addLnav1($url)
+	{
 		$search = array('&l=0','l=0','%26l%3d0');
 		$url = str_replace($search,'',$url);
 		if(strpos($url, 'l=1')===false){
@@ -387,8 +389,8 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		return $url;
 	}
 
-
-	public function clearLnav($url){
+	public function clearLnav($url)
+	{
 		$search = array('&l=1','l=1','%26l%3d1','#%21l=1','%23!l%3d1','#!l=1');
 		return str_replace($search,'',$url);
 	}
@@ -417,7 +419,7 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 			$filters[] = $filter;
 		}
 		*/
-		
+
 		// merging argument filters
 		$filters = array_merge($defaultFilters, $filters);
 
@@ -448,7 +450,6 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 	 */
 	public function getElasticsearchStoreFilter()
 	{
-
 		return $this->getElasticaFilterTerm('store_id', $this->getStoreId());
 	}
 
@@ -535,7 +536,8 @@ class Magehack_Elasticsearch_Helper_Data extends Mage_Core_Helper_Abstract
 		return $this->_queryText;
 	}
 
-	public function getLimitParam(){
+	public function getLimitParam()
+	{
 		return $this->_getRequest()->getParam($this->getLimitParamName());
 	}
 

@@ -1,7 +1,16 @@
 <?php
+
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 require_once BP.'/app/code/core/Mage/CatalogSearch/controllers/ResultController.php';
-class Magehack_Elasticsearch_ResultController extends Mage_CatalogSearch_ResultController{
-	public function indexAction(){
+
+class Magehack_Elasticsearch_ResultController extends Mage_CatalogSearch_ResultController
+{
+	public function indexAction()
+	{
 		$oneRequest = $this->getRequest();
 		$query = Mage::helper('catalogsearch')->getQuery();
         /* @var $query Mage_CatalogSearch_Model_Query */
@@ -35,7 +44,7 @@ class Magehack_Elasticsearch_ResultController extends Mage_CatalogSearch_ResultC
             Mage::helper('catalogsearch')->checkNotes();
             if($oneRequest->isXmlHttpRequest()){
 				$this->getResponse()->setBody($this->_getAjaxSearchResult());
-	    			
+
 	    	}else{
 	    		$this->loadLayout();
 	            $this->_initLayoutMessages('catalog/session');
@@ -51,7 +60,9 @@ class Magehack_Elasticsearch_ResultController extends Mage_CatalogSearch_ResultC
             $this->_redirectReferer();
         }
 	}
-	protected function _getAjaxSearchResult(){
+
+	protected function _getAjaxSearchResult()
+	{
 		$layout = $this->getLayout();
         $layout->getUpdate()->load('catalogsearch_result_ajax');
         $layout->generateXml()->generateBlocks();

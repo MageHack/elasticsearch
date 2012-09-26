@@ -1,7 +1,12 @@
-<?php 
+<?php
+
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Magehack_Elasticsearch_Block_Adminhtml_Run extends Mage_Adminhtml_Block_System_Config_Form_Field
 {
-
     protected function _getElementHtml(Varien_Data_Form_Element_Abstract $element)
     {
         $this->setElement($element);

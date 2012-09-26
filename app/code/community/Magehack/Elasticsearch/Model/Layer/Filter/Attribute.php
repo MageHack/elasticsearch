@@ -1,11 +1,15 @@
 <?php
 
+/**
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
+ */
 class Magehack_Elasticsearch_Model_Layer_Filter_Attribute extends Mage_Catalog_Model_Layer_Filter_Attribute
 {
-
 	/**
-	 * 
-	 * @return Magehack_Elasticsearch_Helper_Data 
+	 *
+	 * @return Magehack_Elasticsearch_Helper_Data
 	 */
 	protected function _getHelper()
 	{
@@ -90,16 +94,17 @@ class Magehack_Elasticsearch_Model_Layer_Filter_Attribute extends Mage_Catalog_M
 		}
 		return $data;
 	}
+	
 	/**
 	 * Gets option attribute value by id.
-	 * 
+	 *
 	 * Takes attribute id as argument and loops through options value
 	 * to find a match.
-	 * 
+	 *
 	 * If found, it returns it.
-	 * 
+	 *
 	 * @param type $arg_id
-	 * @return type 
+	 * @return type
 	 */
 	public function getAttributeOptionValueById($arg_id)
 	{

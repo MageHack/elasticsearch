@@ -3,50 +3,50 @@
 /**
  * This class extends Mage_CatalogSearch_Model_Resource_Fulltext_Collection
  * Provides custom functionality for Mage_CatalogSearch_Model_Resource_Fulltext_Collection
- * 
+ *
  * Mage_CatalogSearch_Model_Resource_Fulltext_Collection extends Mage_Catalog_Model_Resource_Product_Collection
  * which extends Mage_Catalog_Model_Resource_Collection_Abstract
  *
- * @category    Magehack
- * @package     Magehack_Elasticsearch
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  * @author      Carlo Tasca
  */
-
 class Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection extends Mage_CatalogSearch_Model_Resource_Fulltext_Collection
 {
 	protected $_elasticCollectionSize = false;
 	protected $_elasticCollectionHitTotal = false;
-	
+
 	/**
 	 * Set elastic collection size
-	 * 
-	 * @param int $size 
+	 *
+	 * @param int $size
 	 */
-	public function setElasticCollectionSize ($size) 
+	public function setElasticCollectionSize($size)
 	{
 		$this->_elasticCollectionSize = $size;
 	}
-	
-	public function getElasticCollectionSize () 
+
+	public function getElasticCollectionSize()
 	{
 		return (int) $this->_elasticCollectionSize;
 	}
-	
+
 	/**
 	 * Sets elastic collection hits total
-	 * 
-	 * @param type $size 
+	 *
+	 * @param type $size
 	 */
-	public function setElasticCollectionHitTotal ($size) 
+	public function setElasticCollectionHitTotal($size)
 	{
 		$this->_elasticCollectionHitTotal = $size;
 	}
-	
-	public function getElasticCollectionHitTotal () 
+
+	public function getElasticCollectionHitTotal()
 	{
 		return (int) $this->_elasticCollectionHitTotal;
 	}
-	
+
 
 	/**
      * Retrieve query model object
@@ -82,7 +82,7 @@ class Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection extends Mage_Catal
 
         return $this;*/
     }
-	
+
 	/**
      * Get collection size
      *
@@ -90,22 +90,23 @@ class Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection extends Mage_Catal
      */
     public function getSize()
     {
-		if ($this->getElasticCollectionSize() !== false)
-		{
-			Mage::helper('elasticsearch')->log(get_class($this) . '::getSize(); returning elastic collection size ' . $this->getElasticCollectionSize());
-			return intval($this->getElasticCollectionHitTotal());
-		}
-		return 0;
+			if ($this->getElasticCollectionSize() !== false)
+			{
+				Mage::helper('elasticsearch')->log(get_class($this) . '::getSize(); returning elastic collection size ' . $this->getElasticCollectionSize());
+				return intval($this->getElasticCollectionHitTotal());
+			}
+
+			return 0;
     }
-	
-	/**
+
+		/**
      * Retrieve collection last page number
      *
      * @return int
      */
     public function getLastPageNumber()
     {
-		$collectionSize = (int) $this->getElasticCollectionHitTotal();
+			$collectionSize = (int) $this->getElasticCollectionHitTotal();
         if (0 === $collectionSize) {
             return 1;
         }
@@ -116,8 +117,8 @@ class Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection extends Mage_Catal
             return 1;
         }
     }
-	
-	/**
+
+		/**
      * Specify category filter for product collection
      *
      * @param Mage_Catalog_Model_Category $category

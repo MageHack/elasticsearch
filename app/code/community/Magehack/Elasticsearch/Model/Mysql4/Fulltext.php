@@ -1,17 +1,11 @@
 <?php
-/**
- *
- * Magehack_Elasticsearch_Model_Mysql4_Fulltext
- * 
- */
-
 
 /**
  * CatalogSearch Fulltext Index resource model
  *
- * @category    Mage
- * @package     Mage_CatalogSearch
- * @author      Magento Core Team <core@magentocommerce.com>
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Magehack_Elasticsearch_Model_Mysql4_Fulltext extends Mage_CatalogSearch_Model_Mysql4_Fulltext
 {
@@ -25,7 +19,7 @@ class Magehack_Elasticsearch_Model_Mysql4_Fulltext extends Mage_CatalogSearch_Mo
      */
     public function prepareResult($object, $queryText, $query)
     {
-        
+
 		Mage::helper('elasticsearch')->log(get_class($this) . '::prepareResult() invoked');
 		$adapter = $this->_getWriteAdapter();
         if (!$query->getIsProcessed()) {

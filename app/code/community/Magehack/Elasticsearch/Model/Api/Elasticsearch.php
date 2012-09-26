@@ -2,19 +2,13 @@
 
 /**
  * This is a wrapper for Elastica PHP library
- * 
- * @link Documentation http://ruflin.github.com/Elastica/
- * 
- * 
- */
-
-/**
  *
- *  
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
 class Magehack_Elasticsearch_Model_Api_Elasticsearch
 {
-
 	/**
 	 * Prefix of model events names
 	 *
@@ -53,7 +47,7 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 *
-	 * @return Elastica_Client 
+	 * @return Elastica_Client
 	 */
 	public function __construct()
 	{
@@ -62,8 +56,8 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Gets an elastica client
-	 * 
-	 * @return Elastica_Client 
+	 *
+	 * @return Elastica_Client
 	 */
 	public function getElasticaClient()
 	{
@@ -97,8 +91,7 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Gets the current index. If it doesnt exist, creates it and applies settings
-	 * 
-	 * 
+	 *
 	 * @return Elastica_Index
 	 * @throws Elastica_Exception_Client
 	 * @throws Mage_Core_Exception
@@ -130,7 +123,6 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 	}
 
 	/**
-	 *
 	 * @return Elastica_Response
 	 * @throws Elastica_Exception_Client
 	 * @throws Mage_Core_Exception
@@ -153,9 +145,9 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 	/**
 	 * Sets the current indexes settings, use $data to complete override
 	 * otherwise uses getIndexSettings()
-	 * 
+	 *
 	 * @see getIndexSettings()
-	 * 
+	 *
 	 * @param array $data
 	 * @return Elastica_Response
 	 * @throws Elastica_Exception_Client
@@ -191,7 +183,7 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Deletes current index
-	 * 
+	 *
 	 * @return Elastica_Response
 	 * @throws Elastica_Exception_Client
 	 * @throws Mage_Core_Exception
@@ -212,12 +204,12 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 	}
 
 	/**
-	 * Recreates a type inside the current index. When recreating it will set the 
+	 * Recreates a type inside the current index. When recreating it will set the
 	 * mapping for the type
-	 * 
+	 *
 	 * @param Magehack_Elasticsearch_Model_Feed_Abstract $feed_type
 	 * @return Elastica_Response
-	 * 
+	 *
 	 * @throws Elastica_Exception_Client
 	 * @throws Mage_Core_Exception
 	 */
@@ -256,7 +248,7 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Get type in current index by name
-	 * 
+	 *
 	 * @param string $name
 	 * @return Elastica_Type
 	 * @throws Elastica_Exception_Client
@@ -282,10 +274,10 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 	/**
 	 * Gets settings for the index. Uses a combination of the default settings in
 	 * $_defaultAnalysis and also processes any custom settings from admin.
-	 * 
+	 *
 	 * @see _processCustomSettings()
-	 * 
-	 * @return array 
+	 *
+	 * @return array
 	 */
 	public function getIndexSettings()
 	{
@@ -306,7 +298,7 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Search in the set indices, types
-	 * 
+	 *
 	 * @deprecated
 	 *
 	 * @param mixed $query
@@ -338,7 +330,6 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 			$queryObject->setFrom($from);
 		}
 
-
 		$queryObject->setSort(array('_score' => 'desc'));
 
 		try {
@@ -354,7 +345,7 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Search in the set indices, types
-	 * 
+	 *
 	 * @deprecated
 	 *
 	 * @param mixed $query
@@ -378,7 +369,6 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 			$queryObject->setFrom($from);
 		}
 
-
 		$queryObject->setSort(array('_score' => 'desc'));
 
 		try {
@@ -394,22 +384,22 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Makes ES query
-	 * 
-	 * Takes a query string, filters, facets, from, limit and sort as arguments and 
+	 *
+	 * Takes a query string, filters, facets, from, limit and sort as arguments and
 	 * processes ES request
-	 * 
+	 *
 	 * @param string $query
 	 * @param array $filters
 	 * @param array $facets
 	 * @param string/int $from
 	 * @param string/int $limit
 	 * @param array $sort
-	 * @return Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection 
+	 * @return Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection
 	 */
 	public function doSearch($query, $filters = array(), $facets = array(), $from = false, $limit = false, $sort = array())
 	{
 		$queryObject = false;
-		
+
 		if (count($filters) > 0) {
 			$andFilter = new Elastica_Filter_And();
 
@@ -426,10 +416,9 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 		if (count($facets) > 0) {
 			/**
-			 * @todo implement facets? 
+			 * @todo implement facets?
 			 */
 		}
-
 
 		if (!is_null($limit)) {
 			if ($limit == 'all') {
@@ -460,7 +449,7 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Gets Catalog Product Collection
-	 * @return type 
+	 * @return type
 	 */
 	public function getCatalogProductCollection()
 	{
@@ -470,13 +459,13 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 	/**
 	 *
 	 * Processes Elastica Result Set.
-	 * 
+	 *
 	 * Set gets converted into magento fulltext collection for ES 'product' type.
-	 * 
-	 * This method provides sorting functionality to product collection. 
-	 * 
+	 *
+	 * This method provides sorting functionality to product collection.
+	 *
 	 * @param Elastica_ResultSet $set
-	 * @return Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection 
+	 * @return Magehack_Elasticsearch_Model_Mysql4_Fulltext_Collection
 	 */
 	public function processResultSet(Elastica_ResultSet $set)
 	{
@@ -511,13 +500,13 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 
 	/**
 	 * Processes any custom settings set in the admin backend. If you prefix any key
-	 * with a '-' it will unset it (useful for removing default settings 
+	 * with a '-' it will unset it (useful for removing default settings
 	 * like in $_defaultAnalysis) or if you define the same key it will override it
-	 * 
+	 *
 	 * @see Magehack_Elasticsearch_Helper_Data::XML_PATH_INDEX_CUSTOM_SETTINGS
-	 * 
+	 *
 	 * e.g. if your custom settings contained:
-	 * 
+	 *
 	 * {
 	 * 	 "analyzer" : {
 	 *     "ngram" : {
@@ -529,15 +518,15 @@ class Magehack_Elasticsearch_Model_Api_Elasticsearch
 	 *   },
 	 *   "newSetting" : {...}
 	 * }
-	 * 
+	 *
 	 * "ngram"'s setting "filter" inside $_defaultAnalysis would get overriden
 	 * leaving all its other settings intact
-	 * 
-	 * The setting "left_tokenizer" inside $_defaultAnalysis would be completely 
+	 *
+	 * The setting "left_tokenizer" inside $_defaultAnalysis would be completely
 	 * unset leaving the rest of the settings inside "tokenizer" intact
-	 * 
+	 *
 	 * "newSettings" would be added including any subsettings
-	 * 
+	 *
 	 */
 	protected function _processCustomSettings()
 	{

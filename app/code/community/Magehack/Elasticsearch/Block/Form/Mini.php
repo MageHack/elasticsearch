@@ -1,18 +1,14 @@
 <?php
 
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
-
 /**
- * Description of Magehack_ElasticSearch_Block_Form_Mini
- *
- * @author User
+ * @category   MageHack
+ * @package    MageHack_Elasticsearch
+ * @license    http://opensource.org/licenses/osl-3.0.php  Open Software License (OSL 3.0)
  */
-class Magehack_Elasticsearch_Block_Form_Mini extends Mage_Core_Block_Template {
-	
-	public function __construct() {
+class Magehack_Elasticsearch_Block_Form_Mini extends Mage_Core_Block_Template
+{
+	public function __construct()
+	{
 		parent::__construct();
 	}
 }
